@@ -1,0 +1,526 @@
+<title>RareMagaibas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Fredoka:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+:root{
+  --ground:#FCE9EF; --surf:#FFF6F9; --surf-2:#FADCE6; --line:#F3BFD1; --line-2:#E894B2;
+  --ink:#4A1F2E; --ink-2:#8A4C63; --ink-3:#B5798F;
+  --rosa:#D6336C; --rosa-fuerte:#E8447A; --rosa-pop:#FF5C9E;
+  --oro:#9A7318; --oro-soft:#FFF4D6; --oro-line:#E8C86A;
+  --disp:"Fredoka",system-ui,sans-serif;
+  --body:"Nunito",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --pag:min(950px,100% - 2rem);
+  --r:18px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#1F0E17; --surf:#2B1420; --surf-2:#3A1B2B; --line:#4E2437; --line-2:#6B3149;
+    --ink:#FBE7EE; --ink-2:#D8A5B9; --ink-3:#A97389;
+    --rosa:#FF6FA5; --rosa-fuerte:#FF87B4; --rosa-pop:#FF9CC4;
+    --oro:#E8C86A; --oro-soft:#33280F; --oro-line:#8A6C22;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#1F0E17; --surf:#2B1420; --surf-2:#3A1B2B; --line:#4E2437; --line-2:#6B3149;
+  --ink:#FBE7EE; --ink-2:#D8A5B9; --ink-3:#A97389;
+  --rosa:#FF6FA5; --rosa-fuerte:#FF87B4; --rosa-pop:#FF9CC4;
+  --oro:#E8C86A; --oro-soft:#33280F; --oro-line:#8A6C22;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);
+  font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{width:var(--pag);margin-inline:auto;padding-block:2rem 4rem}
+h1,h2,h3{font-family:var(--disp);margin:0;text-wrap:balance;line-height:1.08;font-weight:700}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+a{color:var(--rosa)}
+:focus-visible{outline:3px solid var(--rosa);outline-offset:3px;border-radius:6px}
+p{margin:0 0 1rem}
+strong{font-weight:800;color:var(--ink)}
+
+/* hero con el bicho */
+.hero{background:var(--surf);border:3px solid var(--rosa);border-radius:var(--r);
+  padding:2rem 2rem 0;margin-bottom:1.6rem;display:grid;
+  grid-template-columns:1fr minmax(170px,290px);gap:1rem;align-items:end;overflow:hidden}
+.hero .texto{padding-bottom:2rem}
+.kicker{font-family:var(--mono);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--rosa);margin-bottom:.7rem;font-weight:500}
+.hero h1{font-size:clamp(2.6rem,9vw,4.6rem);color:var(--rosa);letter-spacing:-.02em}
+.hero .sub{font-size:clamp(1.05rem,2.3vw,1.3rem);color:var(--ink-2);max-width:30ch;
+  margin:.7rem 0 0;font-weight:600;line-height:1.35}
+.hero img{display:block;width:100%;height:auto;margin-bottom:-6px}
+
+.intro{font-size:1.05rem}
+.intro .gordo{font-size:1.15rem;font-weight:700}
+
+.pasos{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));
+  margin:1.8rem 0 2.4rem}
+.paso{background:var(--surf);border:2px solid var(--line);border-radius:var(--r);
+  padding:1.2rem 1.15rem}
+.paso .n{font-family:var(--mono);font-size:.68rem;color:var(--rosa);letter-spacing:.14em;
+  margin-bottom:.4rem;font-weight:600}
+.paso h3{font-size:1.02rem;margin:0 0 .35rem}
+.paso p{font-size:.9rem;color:var(--ink-2);margin:0;line-height:1.45}
+
+section{margin-bottom:2.6rem}
+h2{font-size:clamp(1.5rem,4.2vw,2.1rem);color:var(--rosa);margin-bottom:.25rem}
+h2 + .dek{color:var(--ink-3);font-family:var(--mono);font-size:.66rem;letter-spacing:.13em;
+  text-transform:uppercase;margin-bottom:1.1rem;font-weight:500}
+h3{font-size:1.1rem;margin:1.6rem 0 .45rem}
+ul{padding-left:1.15rem;margin:0 0 1rem}
+li{margin-bottom:.4rem}
+li::marker{color:var(--rosa-pop)}
+
+/* ---- idioma ---- */
+.idioma{display:flex;gap:.35rem;justify-content:flex-end;margin-bottom:.9rem}
+.lang{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;padding:.3rem .6rem;
+  border:0;border-radius:99px;cursor:pointer;background:transparent;color:var(--ink-3);
+  box-shadow:0 0 0 1px var(--line);font-weight:600}
+.lang[aria-pressed="true"]{background:var(--rosa);color:#fff;box-shadow:none}
+:root[data-lang="es"] .l-en,
+:root[data-lang="en"] .l-es{display:none}
+
+/* ---- la quema ---- */
+.quema{display:flex;flex-direction:column;align-items:center;gap:.7rem;margin:2rem 0 .4rem}
+.quema figure{margin:0;border:3px solid var(--rosa);border-radius:var(--r);overflow:hidden;
+  background:#0b0a09;line-height:0;max-width:360px;width:100%}
+.quema img{width:100%;height:auto;display:block}
+.quema figcaption{font-size:.78rem;color:var(--ink-3);text-align:center;max-width:44ch;
+  line-height:1.45;margin:0}
+
+/* ---- contador ---- */
+.tablero{display:grid;gap:1px;background:var(--line);border:2px solid var(--line);
+  border-radius:var(--r);overflow:hidden;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));
+  margin:1.6rem 0 1.2rem}
+.marcador{background:var(--surf);padding:1.4rem 1.2rem 1.5rem;display:flex;flex-direction:column;
+  gap:.4rem;align-items:center;text-align:center}
+.marcador .k{font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;color:var(--ink-3);
+  text-transform:uppercase;font-weight:500}
+.marcador .v{font-family:var(--disp);font-weight:700;color:var(--rosa);
+  font-size:clamp(2.2rem,7vw,3.2rem);line-height:1;font-variant-numeric:tabular-nums}
+.marcador .v small{font-size:.34em;color:var(--ink-3);margin-left:.25em;font-weight:600}
+.marcador .n{font-size:.78rem;color:var(--ink-2);line-height:1.35}
+.barra{width:100%;height:6px;background:var(--surf-2);border-radius:99px;overflow:hidden;margin-top:.35rem}
+.barra i{display:block;height:100%;background:var(--rosa-pop);border-radius:99px}
+.boton{font-family:var(--disp);font-weight:700;font-size:1rem;letter-spacing:.05em;
+  padding:.85rem 2.6rem;border:0;border-radius:99px;background:var(--rosa);color:#fff;
+  cursor:not-allowed;opacity:.5}
+.boton[data-listo="si"]{cursor:pointer;opacity:1}
+.acunar .pie{font-size:.85rem;color:var(--ink-3);text-align:center;margin:0}
+
+/* ---- galeria de cartas ---- */
+.mando{display:flex;gap:10px;justify-content:center;margin:1.3rem 0 1.6rem}
+.pastilla{padding:9px 22px;border-radius:99px;border:0;font-family:var(--disp);font-size:.72rem;
+  letter-spacing:.14em;cursor:pointer;background:var(--surf);color:var(--ink-2);
+  box-shadow:0 0 0 2px var(--line);text-transform:uppercase;font-weight:600}
+.pastilla[aria-pressed="true"]{background:var(--rosa);color:#fff;box-shadow:0 0 0 2px var(--rosa)}
+.grilla{display:grid;grid-template-columns:repeat(auto-fill,minmax(238px,1fr));gap:1.9rem}
+.ficha{display:flex;flex-direction:column;gap:.7rem}
+.ficha .boton{width:100%;padding:.65rem 1rem;font-size:.82rem;letter-spacing:.04em}
+.ficha .boton{font-family:var(--mono);font-size:.68rem;letter-spacing:.02em;font-weight:600}
+.ficha .bfoil{background:linear-gradient(100deg,#c2185b,#e0761f 40%,#1e9ea8 70%,#c2185b);
+  color:#fff}
+.carta{aspect-ratio:440/614;border-radius:30px;padding:14px;background:#0b0a09;
+  box-shadow:0 18px 44px rgba(70,15,45,.32);position:relative;container-type:inline-size}
+.ventana{position:absolute;inset:14px;border-radius:18px;overflow:hidden;background:#1a1512;
+  box-shadow:inset 0 0 0 3px rgba(215,192,142,.85), inset 0 0 0 5px rgba(30,24,15,.95)}
+.ventana>img{width:100%;height:100%;object-fit:cover;display:block}
+.ventana .fondo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
+.ventana .recorte{position:absolute;height:auto;
+  filter:drop-shadow(0 10px 18px rgba(10,20,30,.55))}
+.velo{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,
+  rgba(8,6,4,.6) 0%, rgba(8,6,4,0) 20%, rgba(8,6,4,0) 66%, rgba(8,6,4,.75) 100%)}
+.titulo{position:absolute;top:20px;left:22px;right:22px;display:flex;justify-content:space-between;
+  align-items:flex-start;gap:12px;z-index:3}
+.titulo .nom{font-family:"Cinzel",Georgia,serif;font-weight:700;font-size:5cqw;color:#f7eed6;
+  text-shadow:0 2px 6px rgba(0,0,0,.95);line-height:1.1}
+.sello-set{width:20px;height:20px;border-radius:50%;flex:none;
+  background:radial-gradient(circle at 32% 28%, #fffbef, #d8b96a 52%, #6d5626);
+  box-shadow:0 2px 6px rgba(0,0,0,.7), 0 0 0 1px rgba(30,24,14,.9)}
+.pie-carta{position:absolute;left:22px;right:22px;bottom:18px;display:flex;
+  justify-content:space-between;align-items:center;gap:10px;z-index:3;
+  font-family:"Cinzel",Georgia,serif;font-size:2.6cqw;letter-spacing:.22em;color:#e6d9ba;
+  text-shadow:0 2px 5px rgba(0,0,0,.95)}
+.sello{width:30px;height:30px;border-radius:50%;background:#fff;flex:none;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  line-height:1;color:#000;text-shadow:none}
+.sello b{font-family:var(--body);font-weight:800;font-size:10px;
+  letter-spacing:.04em;line-height:1}
+.foil1,.foil2{position:absolute;pointer-events:none;z-index:4}
+.foil1{inset:0;mix-blend-mode:color-dodge;opacity:.4;
+  background:linear-gradient(115deg, rgba(255,0,128,.55) 0%, rgba(255,190,0,.5) 18%,
+    rgba(0,255,170,.5) 36%, rgba(0,140,255,.55) 54%, rgba(180,0,255,.5) 72%, rgba(255,0,128,.55) 100%);
+  background-size:220% 220%;animation:foilHue 9s linear infinite}
+.foil2{top:-30%;left:0;width:40%;height:160%;mix-blend-mode:overlay;
+  background:linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.5), rgba(255,255,255,0));
+  animation:foilSweep 4.6s ease-in-out infinite alternate}
+@keyframes foilHue{0%{filter:hue-rotate(0deg) saturate(1.6)}100%{filter:hue-rotate(360deg) saturate(1.6)}}
+@keyframes foilSweep{0%{transform:translateX(-130%) rotate(12deg)}100%{transform:translateX(130%) rotate(12deg)}}
+
+.escala{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:.9rem;
+  margin:1.3rem 0}
+.nivel{background:var(--surf);border:2px solid var(--line);border-radius:var(--r);
+  padding:1.1rem 1.15rem}
+.nivel:nth-child(2){border-color:var(--line-2)}
+.nivel:nth-child(3){border-color:var(--rosa);background:var(--surf-2)}
+.nivel .g{font-family:var(--disp);font-weight:700;font-size:1.15rem;color:var(--rosa)}
+.nivel .t{font-family:var(--mono);font-size:.6rem;letter-spacing:.09em;color:var(--ink-3);
+  text-transform:uppercase;margin:.3rem 0 .28rem;font-weight:500}
+.nivel p{font-size:.85rem;color:var(--ink-2);margin:0;line-height:1.42}
+
+.scroll{overflow-x:auto;border:2px solid var(--line);border-radius:var(--r);background:var(--surf);
+  margin-bottom:1.1rem}
+table{border-collapse:collapse;width:100%;font-family:var(--mono);font-size:.78rem}
+th,td{padding:.55rem .8rem;text-align:right;border-top:1px solid var(--line);white-space:nowrap}
+th{font-size:.58rem;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);
+  font-weight:600;border-top:0;background:var(--surf-2)}
+th:first-child,td:first-child{text-align:left}
+tfoot td{font-weight:600;background:var(--surf-2);color:var(--rosa)}
+
+.destaque{border:2px solid var(--rosa);border-radius:var(--r);background:var(--surf);
+  padding:1.1rem 1.3rem;margin:1.3rem 0}
+.destaque p:last-child{margin-bottom:0}
+.franco{border:2px solid var(--line);border-radius:var(--r);padding:1.1rem 1.3rem;
+  margin-bottom:.8rem;background:var(--surf)}
+.franco h3{margin:0 0 .35rem;font-size:1rem;color:var(--rosa)}
+.franco p{margin:0;font-size:.93rem;color:var(--ink-2)}
+.franco p + p{margin-top:.6rem}
+
+.cal{list-style:none;counter-reset:paso;margin:1.3rem 0 0;padding:0 0 0 1.3rem;
+  border-left:3px solid var(--line)}
+.cal li{position:relative;padding:0 0 .95rem .35rem;counter-increment:paso}
+.cal li::before{content:counter(paso);position:absolute;left:-2.28rem;top:-.08rem;
+  width:1.65rem;height:1.65rem;border-radius:50%;background:var(--rosa-pop);
+  border:3px solid var(--ground);color:#fff;font-family:var(--mono);font-size:.66rem;
+  font-weight:600;display:flex;align-items:center;justify-content:center}
+.cal li.loop{counter-increment:none}
+.cal li.loop::before{content:"↻";background:var(--surf);color:var(--rosa);
+  border-color:var(--rosa);font-size:.95rem;font-weight:400}
+.cal li.loop .que{color:var(--rosa)}
+.cal .que{font-family:var(--disp);font-size:1.05rem;font-weight:600}
+
+footer{border-top:2px solid var(--line);padding-top:1.3rem;font-size:.8rem;color:var(--ink-3);
+  font-family:var(--mono);line-height:1.6}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}
+  .marco.foil::after{background-position:50% 50%}}
+@media(max-width:620px){
+  .hero{grid-template-columns:1fr;padding:1.6rem 1.4rem 0}
+  .hero .texto{padding-bottom:.5rem}
+  .hero img{max-width:230px;margin-inline:auto}
+}
+</style>
+
+<div class="wrap">
+
+<nav class="idioma" aria-label="Idioma">
+  <button class="lang" data-lang="es" aria-pressed="true">ES</button>
+  <button class="lang" data-lang="en" aria-pressed="false">EN</button>
+</nav>
+
+<header class="hero">
+  <div class="texto">
+    <div class="kicker"><span class="l-es">Convocatoria abierta · Solana</span><span class="l-en">Open call · Solana</span></div>
+    <h1>RareMagaibas</h1>
+    <p class="sub"><span class="l-es">Se acuñan quemando MAGAIBA.</span><span class="l-en">Minted by burning MAGAIBA.</span></p>
+  </div>
+  <img src="img/bicho.webp" alt="MAGAIBA">
+</header>
+
+<p class="intro gordo"><span class="l-es">El arte lo hace la comunidad. Para acuñar hay que
+quemar tokens, y se destruyen para siempre.</span><span class="l-en">The art is made by the
+community. Minting burns tokens, and they are gone for good.</span></p>
+
+<div class="quema">
+  <figure>
+    <img src="img/stone.webp" alt="MAGAIBA burning" loading="lazy">
+  </figure>
+  <figcaption><span class="l-es">Tributo a las animaciones de Pepe the Frog de Matt Furie ·
+  música de Mo Beats. Todo el crédito a sus autores.</span><span class="l-en">A tribute to
+  Matt Furie's Pepe the Frog animations · music by Mo Beats. All credit to their
+  authors.</span></figcaption>
+</div>
+
+<div class="tablero">
+  <div class="marcador">
+    <div class="k"><span class="l-es">MAGAIBA quemado</span><span class="l-en">MAGAIBA burned</span></div>
+    <div class="v" id="m-quemado">0</div>
+    <div class="n"><span class="l-es">De hasta 160.000.000</span><span class="l-en">Of up to 160,000,000</span></div>
+    <div class="barra"><i id="b-quemado" style="width:0%"></i></div>
+  </div>
+  <div class="marcador">
+    <div class="k"><span class="l-es">Cartas acuñadas</span><span class="l-en">Cards minted</span></div>
+    <div class="v"><span id="m-hechas">0</span><small>/ 160</small></div>
+    <div class="n"><span class="l-es">Una por billetera · tope 160</span><span class="l-en">One per wallet · cap 160</span></div>
+    <div class="barra"><i id="m-barra" style="width:0%"></i></div>
+  </div>
+  <div class="marcador">
+    <div class="k"><span class="l-es">Quedan</span><span class="l-en">Left</span></div>
+    <div class="v" id="m-quedan">160</div>
+    <div class="n"><span class="l-es">Cuando se agotan, no se vuelven a emitir</span><span class="l-en">Once gone, never reissued</span></div>
+    <div class="barra"><i id="b-quedan" style="width:100%"></i></div>
+  </div>
+</div>
+
+<section>
+  <h2><span class="l-es">Serie 0 · El Génesis (2024)</span><span class="l-en">Series 0 · The Genesis (2024)</span></h2>
+  <div class="dek"><span class="l-es">12 cartas · gentle o ultra gentle</span><span class="l-en">12 cards · gentle or ultra gentle</span></div>
+
+  <div class="l-es">
+    <p>Si fuiste parte del airdrop original —<strong>160 direcciones en total</strong>—
+    podés acuñar <strong>una carta</strong>. La que quieras, y una sola.</p>
+    <p><strong>710.000 MAGAIBA</strong> la Gentle. <strong>1.000.000</strong> la Ultra
+    Gentle, que es la misma carta en foil. En los dos casos los tokens se queman.</p>
+  </div>
+  <div class="l-en">
+    <p>If you were part of the original airdrop —<strong>160 addresses in total</strong>—
+    you can mint <strong>one card</strong>. Whichever you want, and only one.</p>
+    <p><strong>710,000 MAGAIBA</strong> for the Gentle. <strong>1,000,000</strong> for the
+    Ultra Gentle, which is the same card in foil. Either way the tokens are burned.</p>
+  </div>
+
+  <div class="mando">
+    <button class="pastilla" id="p-normal" aria-pressed="true">Gentle</button>
+    <button class="pastilla" id="p-foil" aria-pressed="false">Ultra Gentle</button>
+  </div>
+  <div class="grilla" id="grilla"></div>
+</section>
+
+<section>
+  <h2><span class="l-es">Escala de gentileza</span><span class="l-en">The gentleness scale</span></h2>
+  <div class="dek"><span class="l-es">Dos niveles</span><span class="l-en">Two tiers</span></div>
+
+  <div class="escala">
+    <div class="nivel"><div class="g">Gentle</div><div class="t">710.000</div>
+      <p><span class="l-es">La carta normal.</span><span class="l-en">The regular card.</span></p></div>
+    <div class="nivel"><div class="g">Ultra Gentle</div><div class="t">1.000.000</div>
+      <p><span class="l-es">La misma carta, en foil.</span><span class="l-en">The same card, in foil.</span></p></div>
+  </div>
+
+  <p class="l-es">Hay <strong>32 billeteras que nunca movieron un token</strong> desde el
+  airdrop de 2024. Esas y el dev team sacan la Ultra Gentle pagando 710.000: el foil no se
+  lo cobramos a quien estuvo desde el principio.</p>
+  <p class="l-en">There are <strong>32 wallets that never moved a single token</strong>
+  since the 2024 airdrop. Those and the dev team get the Ultra Gentle for 710,000: we
+  don't charge foil to anyone who was there from the start.</p>
+</section>
+
+<section>
+  <h2><span class="l-es">Economía</span><span class="l-en">Economics</span></h2>
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr>
+          <th><span class="l-es">Serie</span><span class="l-en">Series</span></th>
+          <th><span class="l-es">Cartas</span><span class="l-en">Cards</span></th>
+          <th><span class="l-es">Tope</span><span class="l-en">Cap</span></th>
+          <th>Gentle</th>
+          <th>Ultra Gentle</th>
+          <th><span class="l-es">Se queman</span><span class="l-en">Burned</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="l-es">0 · El Génesis (2024)</span><span class="l-en">0 · The Genesis (2024)</span></td>
+            <td>12</td><td>160</td><td>710.000</td><td>1.000.000</td>
+            <td><span class="l-es">hasta 160M</span><span class="l-en">up to 160M</span></td></tr>
+        <tr><td><span class="l-es">1 · La Vuelta (2026)</span><span class="l-en">1 · La Vuelta (2026)</span></td>
+            <td>12</td><td><span class="l-es">abierta</span><span class="l-en">open</span></td>
+            <td>200.000</td><td>300.000</td><td>—</td></tr>
+        <tr><td><span class="l-es">2 · Días del futuro pasado (202X)</span><span class="l-en">2 · Days of Future Past (202X)</span></td>
+            <td>12</td><td><span class="l-es">abierta</span><span class="l-en">open</span></td>
+            <td>350.000</td><td>500.000</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="l-es">El tope de El Génesis son las 160 billeteras que tienen el airdrop: una
+  carta cada una. Si todas acuñan en foil se queman <strong>160.000.000</strong>, el 18,2%
+  del supply.</p>
+  <p class="l-en">The Genesis cap is the 160 wallets holding the airdrop: one card each. If
+  every one mints in foil, <strong>160,000,000</strong> get burned — 18.2% of the
+  supply.</p>
+</section>
+
+<section>
+  <h2><span class="l-es">Bases</span><span class="l-en">Open call</span></h2>
+  <div class="dek">Serie 1 «La Vuelta» (2026)</div>
+
+  <div class="l-es">
+    <h3>Formato</h3>
+    <ul>
+      <li><strong>Vertical <span class="mono">5:7</span></strong>, mínimo 1500×2100&nbsp;px.
+          Es el único formato: lo que venga en otra proporción queda afuera.</li>
+      <li><span class="mono">PNG</span> · <span class="mono">JPG</span> hasta 20&nbsp;MB ·
+          <span class="mono">GIF</span> · <span class="mono">MP4</span> hasta 15&nbsp;s.</li>
+      <li>Hasta 3 obras por artista. Propia e inédita como NFT.</li>
+    </ul>
+    <h3>Qué mandás</h3>
+    <ul>
+      <li>Archivo y título.</li>
+      <li>Tu wallet de Solana.</li>
+      <li>Cómo te acreditamos.</li>
+    </ul>
+    <h3>Qué te llevás</h3>
+    <ul>
+      <li><strong>Todo el SOL</strong> de cada acuñación de tu carta, foils incluidas. Sin comisión.</li>
+      <li>Dos ediciones de tu propia carta.</li>
+      <li>Crédito permanente en los metadatos on-chain.</li>
+    </ul>
+    <h3>Licencia y curaduría</h3>
+    <ul>
+      <li><strong>CC BY-SA 4.0.</strong> La obra sigue siendo tuya. Cualquiera puede
+          remixarla si te acredita y deja lo derivado igual de libre.</li>
+      <li>Curan los devs originales.</li>
+    </ul>
+  </div>
+
+  <div class="l-en">
+    <h3>Format</h3>
+    <ul>
+      <li><strong>Vertical <span class="mono">5:7</span></strong>, minimum 1500×2100&nbsp;px.
+          It's the only format: anything in another ratio is out.</li>
+      <li><span class="mono">PNG</span> · <span class="mono">JPG</span> up to 20&nbsp;MB ·
+          <span class="mono">GIF</span> · <span class="mono">MP4</span> up to 15&nbsp;s.</li>
+      <li>Up to 3 works per artist. Your own, unreleased as an NFT.</li>
+    </ul>
+    <h3>What you send</h3>
+    <ul>
+      <li>File and title.</li>
+      <li>Your Solana wallet.</li>
+      <li>How you want to be credited.</li>
+    </ul>
+    <h3>What you get</h3>
+    <ul>
+      <li><strong>All the SOL</strong> from every mint of your card, foils included. No cut.</li>
+      <li>Two editions of your own card.</li>
+      <li>Permanent credit in the on-chain metadata.</li>
+    </ul>
+    <h3>License and curation</h3>
+    <ul>
+      <li><strong>CC BY-SA 4.0.</strong> The work stays yours. Anyone can remix it as long
+          as they credit you and keep the result equally free.</li>
+      <li>Curated by the original devs.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2><span class="l-es">Calendario</span><span class="l-en">How it runs</span></h2>
+  <div class="pasos">
+    <div class="paso">
+      <div class="n">01</div>
+      <h3><span class="l-es">Mandás la obra</span><span class="l-en">You send the work</span></h3>
+      <p><span class="l-es">Abierto a cualquiera. Vos el arte, nosotros el marco.</span><span class="l-en">Open to anyone. You bring the art, we bring the frame.</span></p>
+    </div>
+    <div class="paso">
+      <div class="n">02</div>
+      <h3><span class="l-es">Se cura</span><span class="l-en">It gets curated</span></h3>
+      <p><span class="l-es">Número fijo de cartas por serie, con su nivel de gentileza.</span><span class="l-en">A fixed number of cards per series, each with its gentleness tier.</span></p>
+    </div>
+    <div class="paso">
+      <div class="n">03</div>
+      <h3><span class="l-es">Se quema</span><span class="l-en">It gets burned</span></h3>
+      <p><span class="l-es">Quemás MAGAIBA, pagás unos centavos de SOL al artista. Puede salir foil.</span><span class="l-en">You burn MAGAIBA and pay a few cents of SOL to the artist. It may come out foil.</span></p>
+    </div>
+  </div>
+
+  <ol class="cal">
+    <li><span class="que"><span class="l-es">Se publica la primera edición, «La Vuelta»</span><span class="l-en">The first edition, «La Vuelta», goes up</span></span></li>
+    <li><span class="que"><span class="l-es">Se abre la convocatoria</span><span class="l-en">The open call starts</span></span></li>
+    <li><span class="que"><span class="l-es">Curaduría</span><span class="l-en">Curation</span></span></li>
+    <li><span class="que"><span class="l-es">Se sube la nueva colección</span><span class="l-en">The new collection goes live</span></span></li>
+    <li><span class="que"><span class="l-es">Se abre la acuñación</span><span class="l-en">Minting opens</span></span></li>
+    <li class="loop"><span class="que"><span class="l-es">Repetir del 2 al 5</span><span class="l-en">Repeat 2 through 5</span></span></li>
+  </ol>
+</section>
+
+<footer>
+  <p>MAGAIBA · <span class="mono">A6rSPi9JmJgVkW6BatsA6MjFYLseizPM2Fnt92coFjf4</span></p>
+  <p class="l-es">Obras bajo CC BY-SA 4.0. Las que ilustran esta página son de la
+  comunidad, como ejemplo del Génesis. Las quemas se verifican on-chain.</p>
+  <p class="l-en">Works under CC BY-SA 4.0. The ones illustrating this page are the
+  community's, as a sample of the Genesis. Burns are verifiable on-chain.</p>
+  <p class="l-es">Quien impulsa esto co-creó MAGAIBA en 2024 y tiene posición. Nada acá es
+  consejo de inversión.</p>
+  <p class="l-en">Whoever runs this co-created MAGAIBA in 2024 and holds a position.
+  None of this is investment advice.</p>
+</footer>
+
+</div>
+
+<script>
+const CARTAS = [
+  {n:"Magaiba",                s:"001", bg:"img/bg.webp", cut:"img/cut1.webp",  cw:"84%", cr:"-10%", cb:"-6%"},
+  {n:"Magaiba Tokyo",          s:"002", src:"img/c002.webp", op:"50% 34%"},
+  {n:"Magaiba Mecha",          s:"003", src:"img/c003.webp", op:"52% 38%"},
+  {n:"Magaiba Springfield",    s:"004", src:"img/c004.webp", op:"0% 42%"},
+  {n:"Magaiba Lo-Fi",          s:"005", src:"img/c005.webp", op:"46% 42%"},
+  {n:"Magaiba Instrumentality",s:"006", src:"img/c006.webp", op:"50% 40%"},
+  {n:"Magaiba Neural",         s:"007", src:"img/c007.webp", op:"50% 62%"},
+  {n:"Magaiba Portrait",       s:"008", src:"img/c008.webp", op:"50% 50%"},
+  {n:"Magaiba Prime",          s:"009", src:"img/c009.webp", op:"50% 40%"},
+  {n:"Magaiba Sketch",         s:"010", bg:"img/bg.webp", cut:"img/cut10.webp", cw:"78%", cr:"-8%", cb:"-5%"},
+  {n:"Magaiba Oracle",         s:"011", src:"img/c011.webp", op:"64% 40%"},
+  {n:"Magaiba Fuji",           s:"012", src:"img/c012.webp", op:"50% 44%"},
+];
+const ESTADO = {quemado:0, hechas:0, total:160, meta:160000000};
+
+const T = {
+  es: {acunar:"Acuñar", gentle:"GENTLE", ultra:"ULTRA GENTLE", loc:"es-AR"},
+  en: {acunar:"Mint",   gentle:"GENTLE", ultra:"ULTRA GENTLE", loc:"en-US"},
+};
+let lang = (navigator.language || "es").toLowerCase().startsWith("en") ? "en" : "es";
+function ponIdioma(l){
+  lang = l;
+  document.documentElement.dataset.lang = l;
+  document.documentElement.lang = l;
+  for (const b of document.querySelectorAll('.lang'))
+    b.setAttribute('aria-pressed', String(b.dataset.lang === l));
+  pinta(); marca();
+}
+let foil = false;
+const grilla = document.getElementById('grilla');
+
+function pinta(){
+  grilla.innerHTML = CARTAS.map(c => `
+    <div class="ficha">
+    <article class="carta">
+      <div class="ventana">
+        ${c.cut
+          ? `<img class="fondo" src="${c.bg}" alt="">
+             <img class="recorte" src="${c.cut}" alt="${c.n}" style="width:${c.cw};right:${c.cr};bottom:${c.cb}">`
+          : `<img src="${c.src}" alt="${c.n}" style="object-position:${c.op}">`}
+        <div class="velo"></div>
+        <div class="titulo"><span class="nom">${c.n}</span><span class="sello-set"></span></div>
+        <div class="pie-carta">
+          <span class="sello" title="Serie 0 · El Génesis"><b>0ED</b></span>
+          <span>${c.s}/012 · MGB</span>
+          <span>${foil ? T[lang].ultra : T[lang].gentle}</span>
+        </div>
+        ${foil ? '<div class="foil1"></div><div class="foil2"></div>' : ''}
+      </div>
+    </article>
+    <button class="boton${foil ? ' bfoil' : ''}" disabled>${T[lang].acunar} · ${(foil?1000000:710000).toLocaleString(T[lang].loc)}</button>
+    </div>`).join('');
+}
+function marca(){
+  const {quemado:q, hechas:h, total:t} = ESTADO;
+  document.getElementById('m-quemado').textContent = q.toLocaleString(T[lang].loc);
+  document.getElementById('m-hechas').textContent  = h.toLocaleString(T[lang].loc);
+  document.getElementById('m-quedan').textContent  = (t-h).toLocaleString(T[lang].loc);
+  const meta = ESTADO.meta;
+  document.getElementById('b-quemado').style.width = (q/meta*100).toFixed(1)+'%';
+  document.getElementById('m-barra').style.width   = (h/t*100).toFixed(1)+'%';
+  document.getElementById('b-quedan').style.width  = ((t-h)/t*100).toFixed(1)+'%';
+}
+for (const [id, v] of [['p-normal',false],['p-foil',true]]) {
+  document.getElementById(id).onclick = () => {
+    foil = v;
+    document.getElementById('p-foil').setAttribute('aria-pressed', String(v));
+    document.getElementById('p-normal').setAttribute('aria-pressed', String(!v));
+    pinta();
+  };
+}
+for (const b of document.querySelectorAll('.lang'))
+  b.onclick = () => ponIdioma(b.dataset.lang);
+ponIdioma(lang);
+</script>
