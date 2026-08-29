@@ -31,3 +31,11 @@
   for = "/allowlist.json"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
+
+# magaiba.xyz — el dominio se apunta desde el panel de Netlify.
+# Con www redirigiendo al apex.
+[[redirects]]
+  from = "https://www.magaiba.xyz/*"
+  to = "https://magaiba.xyz/:splat"
+  status = 301
+  force = true
