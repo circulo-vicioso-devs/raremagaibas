@@ -26,11 +26,14 @@ export const CFG = {
   // Gentle el foil. Los metadatos son inmutables, así que cada una tiene los
   // suyos y no hay forma de que salga una carta mal etiquetada.
   MAQUINAS: {
-    // "001": { gentle: "…", foil: "…" },
-  },
+    "001": {
+        foil: "DVYRSYsHEwozeTR2dC6gYCxTCzPnw1F7grCkwUmuy1Fv",
+        gentle: "44QWm4EEFt5zioAuBT5WvfA95776J9AESDikompKy8mV"
+    }
+},
 
   // La colección que agrupa las 12 cartas en los marketplaces.
-  COLECCION: "",
+  COLECCION: "DsC9cF8DMYCvFpaJWVGZNZH2J7tEZe4TaYMxBmH2S7ws",
 
   // Dirección que recibe el SOL del artista, por carta. Se completa al desplegar.
   TESOROS: {},

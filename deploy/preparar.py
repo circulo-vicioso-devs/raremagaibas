@@ -97,7 +97,8 @@ def config(serie, nombre, foil):
             "solPayment": {"value": SOL_ARTISTA, "destination": TESORO},
         }
         if lista:
-            g["allowList"] = {"merkleRoot": f"PEGAR_MERKLE_ROOT_DE_{lista}"}
+            raiz = json.load(open(os.path.join(RAIZ, "data", "merkle.json")))
+            g["allowList"] = {"merkleRoot": raiz[lista]["root"]}
         return g
 
     return {
@@ -123,7 +124,7 @@ def config(serie, nombre, foil):
                 [{"label": "gentle", "guards": guards(GENTLE, "club")}]
                 if not foil else
                 [{"label": "ultra",    "guards": guards(ULTRA,  "club")},
-                 {"label": "foilclub", "guards": guards(GENTLE, "foil")}]
+                 {"label": "foil36", "guards": guards(GENTLE, "foil")}]
             ),
         },
     }

@@ -32,12 +32,12 @@
             "destination": "3ukZwiJ9ciZtdfya9Wc8F8kGewMmhbj6ssYKdB2invYq"
           },
           "allowList": {
-            "merkleRoot": "PEGAR_MERKLE_ROOT_DE_club"
+            "merkleRoot": "c79f5614c5aa67bd39b940f5bacae1d51a5b70fb8c836dfbe0c868c71e17ed07"
           }
         }
       },
       {
-        "label": "foilclub",
+        "label": "foil36",
         "guards": {
           "tokenBurn": {
             "amount": 71000000000000,
@@ -48,7 +48,7 @@
             "destination": "3ukZwiJ9ciZtdfya9Wc8F8kGewMmhbj6ssYKdB2invYq"
           },
           "allowList": {
-            "merkleRoot": "PEGAR_MERKLE_ROOT_DE_foil"
+            "merkleRoot": "980575ef84945e1c2192df7cba3a4329edc1db8f54fcced9a8cf73d667516441"
           }
         }
       }
