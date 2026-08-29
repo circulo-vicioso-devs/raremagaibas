@@ -33,9 +33,28 @@
     Cache-Control = "public, max-age=0, must-revalidate"
 
 # magaiba.xyz — el dominio se apunta desde el panel de Netlify.
-# Con www redirigiendo al apex.
+# www va al apex.
 [[redirects]]
   from = "https://www.magaiba.xyz/*"
   to = "https://magaiba.xyz/:splat"
   status = 301
   force = true
+
+# El sitio vive en /raremagaiba/. Es un rewrite (200), no un redirect: la
+# URL que ve el visitante no cambia, y las rutas relativas del HTML siguen
+# resolviendo porque termina en barra.
+[[redirects]]
+  from = "/raremagaiba"
+  to = "/raremagaiba/"
+  status = 301
+
+[[redirects]]
+  from = "/raremagaiba/*"
+  to = "/:splat"
+  status = 200
+
+# El plural, por si alguien lo escribe así.
+[[redirects]]
+  from = "/raremagaibas/*"
+  to = "/raremagaiba/:splat"
+  status = 301
