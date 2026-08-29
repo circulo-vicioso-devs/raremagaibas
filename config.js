@@ -17,10 +17,13 @@ export const CFG = {
   CARTAS_META: 600,        // piezas de la serie
   META_QUEMA: 163 * 710_000,  // referencia de la barra de quemado
 
-  // RPC. El público alcanza para leer saldos y anda con CORS, pero tiene límite
-  // de pedidos. Si hace falta más, poner acá una key de Helius RESTRINGIDA POR
-  // DOMINIO — este repo es público y cualquiera puede leer lo que se escriba acá.
-  RPC: "https://api.mainnet-beta.solana.com",
+  // RPC. Va contra Helius, que hace falta porque getAssetsByGroup es un método
+  // DAS que el RPC público no tiene (sin él, el contador de coleccionistas da 0).
+  //
+  // La key NO va acá: este repo es público. El navegador pega a /rpc, que es un
+  // proxy de Netlify definido en el netlify.toml del repo privado magaiba-web.
+  // La key vive ahí y nunca sale al cliente.
+  RPC: "/rpc",
 
   // Dos Candy Machines por carta: la Gentle entrega el arte normal y la Ultra
   // Gentle el foil. Los metadatos son inmutables, así que cada una tiene los
