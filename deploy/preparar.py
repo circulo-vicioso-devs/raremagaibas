@@ -49,8 +49,8 @@ CARTAS = [
 TIRADA = 60
 
 # Se completan antes de desplegar.
-TESORO = "PONER_LA_WALLET_QUE_COBRA_EL_SOL"
-AUTORIDAD = "PONER_LA_WALLET_QUE_DESPLIEGA"
+TESORO = "3ukZwiJ9ciZtdfya9Wc8F8kGewMmhbj6ssYKdB2invYq"
+AUTORIDAD = "3ukZwiJ9ciZtdfya9Wc8F8kGewMmhbj6ssYKdB2invYq"
 
 
 def metadatos(serie, nombre, archivo, edicion):

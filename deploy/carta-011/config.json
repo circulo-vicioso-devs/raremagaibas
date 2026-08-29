@@ -6,7 +6,7 @@
   "isSequential": false,
   "creators": [
     {
-      "address": "PONER_LA_WALLET_QUE_DESPLIEGA",
+      "address": "3ukZwiJ9ciZtdfya9Wc8F8kGewMmhbj6ssYKdB2invYq",
       "share": 100
     }
   ],
@@ -28,7 +28,7 @@
           },
           "solPayment": {
             "value": 0.05,
-            "destination": "PONER_LA_WALLET_QUE_COBRA_EL_SOL"
+            "destination": "3ukZwiJ9ciZtdfya9Wc8F8kGewMmhbj6ssYKdB2invYq"
           },
           "allowList": {
             "merkleRoot": "PEGAR_MERKLE_ROOT_DE_club"
@@ -44,7 +44,7 @@
           },
           "solPayment": {
             "value": 0.05,
-            "destination": "PONER_LA_WALLET_QUE_COBRA_EL_SOL"
+            "destination": "3ukZwiJ9ciZtdfya9Wc8F8kGewMmhbj6ssYKdB2invYq"
           },
           "allowList": {
             "merkleRoot": "PEGAR_MERKLE_ROOT_DE_club"
@@ -60,7 +60,7 @@
           },
           "solPayment": {
             "value": 0.05,
-            "destination": "PONER_LA_WALLET_QUE_COBRA_EL_SOL"
+            "destination": "3ukZwiJ9ciZtdfya9Wc8F8kGewMmhbj6ssYKdB2invYq"
           },
           "allowList": {
             "merkleRoot": "PEGAR_MERKLE_ROOT_DE_foil"
