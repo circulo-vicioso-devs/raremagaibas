@@ -29,6 +29,45 @@ export const CFG = {
     "001": {
         foil: "DVYRSYsHEwozeTR2dC6gYCxTCzPnw1F7grCkwUmuy1Fv",
         gentle: "44QWm4EEFt5zioAuBT5WvfA95776J9AESDikompKy8mV"
+    },
+    "002": {
+        foil: "ETresJebu3m5ZDs4dcxdgQrJcpW1aUUBkzxWHx4pPsx8",
+        gentle: "3ThV5e3iQCZijFe52KG8CepjC6i7CXQzKobxMVU81x6T"
+    },
+    "003": {
+        foil: "9WA2Jqp9mapCDS2pkFRm564AQc96westWReoYGKyaoVr",
+        gentle: "ERss2okJNfNqF2BRrxvtwCXZ9o9HzRxk7SnztFvyTCnK"
+    },
+    "004": {
+        foil: "48hnWKshU5iKHwSoghUAtn8qBBuwHwR4aMHYJrueU3HB",
+        gentle: "5HhbQzuUC2vojccjb1dTooHg2G853NbxyhYhNZP1YwcL"
+    },
+    "005": {
+        foil: "D5bdAVznkfxWTWt2cHhGGtZ1AHCCJUKzi1HpZEYRXy4H",
+        gentle: "GixRLHh8mcaz4gq9Jq3P3Ghh7DokxLwpFxTRtfeEevc5"
+    },
+    "006": {
+        foil: "Fq33qdiXumU5TmxH5MbMmmE6ftXeKQXTj2HZSGuriodY",
+        gentle: "SeDqsg7NBpiTv2tF64gC6JQbd12eFDvSse5BDBqWQ7f"
+    },
+    "007": {
+        foil: "4ggLaGhymSHafJUZU2t5Z54zb2gwjuDs4FRwupG8C2sq",
+        gentle: "FFbxWAZJZifqh75b1MBmtoivJipWDXSwAYAVdQL5Ygt7"
+    },
+    "008": {
+        foil: "ADCpsxBcRcNGCizd1jjQrZLsDgdU5T6npjKf6r16WMMJ",
+        gentle: "CEtgVe13QtAPZUqp43k5PG8mioimJgGtLYcRPKvuXxtX"
+    },
+    "009": {
+        foil: "GHq4GBy6rrR7CfiVepw3sBsJYyYye977oyeLytfyNWMf",
+        gentle: "6LKPmDSB5pNhJsi8hvDmqW92GG9LUC2waZgcf8YF1n6t"
+    },
+    "010": {
+        foil: "Ev135pheFaN534BME3mTEgKUwgc2yjjhfB3dAG2XHKWL",
+        gentle: "8R8QL1ryKrK7YWRMFE7nZ5TRmUd2t7dm8ifTUXTdgiZr"
+    },
+    "011": {
+        gentle: "6Goc51jeNBdG5Rsrv2WRe1AeXvAEvVXzJy85ube6zZGL"
     }
 },
 

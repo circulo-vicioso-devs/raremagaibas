@@ -48,6 +48,11 @@ CARTAS = [
 # se quede afuera, y lo que no se acuña no existe.
 TIRADA = 25   # por máquina; con foil son 50 por carta, 600 en total
 
+# La colección que agrupa las 12 cartas. Sugar crea una por máquina salvo que
+# el cache.json ya la traiga con el ítem "-1" marcado onChain=True — sin eso,
+# en Magic Eden aparecen 24 colecciones sueltas en vez de una de 12 cartas.
+COLECCION_MINT = "DsC9cF8DMYCvFpaJWVGZNZH2J7tEZe4TaYMxBmH2S7ws"
+
 # Se completan antes de desplegar.
 TESORO = "3ukZwiJ9ciZtdfya9Wc8F8kGewMmhbj6ssYKdB2invYq"
 AUTORIDAD = "3ukZwiJ9ciZtdfya9Wc8F8kGewMmhbj6ssYKdB2invYq"

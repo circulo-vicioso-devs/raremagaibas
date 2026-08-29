@@ -1,14 +1,35 @@
 # Deploy de la Serie 0
 
-## Dónde quedó (2026-08-29, 03:00 UTC aprox)
+## Estado (2026-08-29)
 
 | | |
 |---|---|
-| Desplegadas | **2 de 24** — `carta-001` y `carta-001-foil` |
-| SOL gastado | 0,0796 |
-| SOL restante | ~0,43 |
-| Assets en Arweave | **24/24 subidos**, gratis vía Turbo |
-| Asentados en arweave.net | **2 de 24** — el resto sigue propagando |
+| **Desplegadas** | **21 de 24**, todas con sus guards verificados |
+| Faltan | `carta-011-foil`, `carta-012`, `carta-012-foil` |
+| SOL gastado | 0,4836 |
+| SOL restante | 0,026 |
+| Assets en Arweave | 24/24 subidos **y asentados** |
+| Colección | `DsC9cF8DMYCvFpaJWVGZNZH2J7tEZe4TaYMxBmH2S7ws`, compartida |
+
+Las 11 cartas desplegadas ya están en `web/config.js`. La 011 tiene la Gentle
+pero no la foil; la 012 no tiene ninguna.
+
+## Para terminar
+
+1. **Fondear la wallet** `3ukZwiJ9ciZtdfya9Wc8F8kGewMmhbj6ssYKdB2invYq`
+   con **0,1 SOL** — sobra para las tres que faltan (0,020 cada una).
+
+2. **Desplegar**:
+   ```bash
+   cd deploy && ./desplegar.sh     # sigue por donde quedó, solo, y corta si falta saldo
+   ```
+
+3. **Pasar las direcciones al sitio**:
+   ```bash
+   python3 deploy/actualizar-config.py
+   ```
+
+4. `git add -A && git commit && git push`
 
 ## Lo que falta
 
