@@ -41,22 +41,35 @@ async function supplyActual() {
   return Number(r.value.uiAmountString);
 }
 
+// Coleccionistas: billeteras que tienen al menos una carta. Sale de la colección
+// cuando esté desplegada; hasta entonces es 0 y no inventa nada.
+async function contarColeccionistas() {
+  if (!CFG.COLECCION) return 0;
+  try {
+    const r = await rpc("getAssetsByGroup", {
+      groupKey: "collection", groupValue: CFG.COLECCION, page: 1, limit: 1000,
+    });
+    return new Set((r.items || []).map((i) => i.ownership?.owner).filter(Boolean)).size;
+  } catch { return 0; }
+}
+
 // ---------- contador ----------
 export async function refrescarContador() {
   try {
     const supply = await supplyActual();
+    const coleccionistas = await contarColeccionistas();
     const quemado = Math.max(0, CFG.SUPPLY_BASE - supply);
-    // el piso son las Gentle: sirve para no exagerar cuántas se acuñaron
-    const hechas = Math.min(CFG.TOPE, Math.floor(quemado / CFG.PRECIO_GENTLE));
-    const meta = CFG.TOPE * CFG.PRECIO_ULTRA;
+    // piso de cartas: si todas fueran Gentle. No exagera.
+    const hechas = Math.floor(quemado / CFG.PRECIO_GENTLE);
+    const meta = CFG.META_QUEMA;
     const loc = document.documentElement.lang === "en" ? "en-US" : "es-AR";
 
     $("m-quemado").textContent = fmt(quemado, loc);
     $("m-hechas").textContent = fmt(hechas, loc);
-    $("m-quedan").textContent = fmt(CFG.TOPE - hechas, loc);
+    $("m-quedan").textContent = fmt(coleccionistas, loc);
     $("b-quemado").style.width = (quemado / meta * 100).toFixed(1) + "%";
-    $("m-barra").style.width = (hechas / CFG.TOPE * 100).toFixed(1) + "%";
-    $("b-quedan").style.width = ((CFG.TOPE - hechas) / CFG.TOPE * 100).toFixed(1) + "%";
+    $("m-barra").style.width = Math.min(100, hechas / CFG.CARTAS_META * 100).toFixed(1) + "%";
+    $("b-quedan").style.width = Math.min(100, coleccionistas / CFG.CLUB * 100).toFixed(1) + "%";
   } catch (e) {
     console.warn("no se pudo leer el supply:", e.message);
   }
@@ -118,8 +131,9 @@ async function revisar() {
     txtEn = `${corto(wallet.address)} · ${s} MAGAIBA. You're in the club, and the Ultra Gentle costs you 710,000 — we don't charge you foil.`;
   } else if (enClub || alcanza) {
     clase = "si";
-    txtEs = `${corto(wallet.address)} · ${s} MAGAIBA. Podés acuñar una carta.`;
-    txtEn = `${corto(wallet.address)} · ${s} MAGAIBA. You can mint one card.`;
+    const n = Math.floor(saldo / CFG.PRECIO_GENTLE);
+    txtEs = `${corto(wallet.address)} · ${s} MAGAIBA. Te alcanza para ${n} ${n === 1 ? "carta" : "cartas"}.`;
+    txtEn = `${corto(wallet.address)} · ${s} MAGAIBA. Enough for ${n} card${n === 1 ? "" : "s"}.`;
   } else {
     const falta = fmt(Math.ceil(CFG.PRECIO_GENTLE - saldo), loc);
     txtEs = `${corto(wallet.address)} · ${s} MAGAIBA. Te faltan ${falta} para llegar a los 710.000 del airdrop.`;
@@ -140,16 +154,18 @@ function estado(clase, es, en) {
 // ---------- acuñar ----------
 export async function acunar(carta, foil) {
   if (!wallet) { await conectar(); return; }
-  if (!CFG.CANDY_MACHINE) {
+  if (!CFG.MAQUINAS[carta]) {
     estado("no",
       "La acuñación todavía no abrió. Cuando abra, este mismo botón la ejecuta.",
       "Minting hasn't opened yet. When it does, this same button runs it.");
     return;
   }
-  // Con la Candy Machine desplegada, acá va la transacción:
-  //   umi.use(walletAdapterIdentity(wallet.prov))
-  //   mintV2(umi, { candyMachine, mintArgs: { tokenBurn: {...}, solPayment: {...},
-  //                                           allowList: { merkleRoot } } })
+  // Con las máquinas desplegadas, acá va la transacción. Una por carta, y el
+  // grupo del guard decide si es gentle, ultra o el foil sin plus de las 36.
+  //   const grupo = foil ? (esDeLas36 ? "foilclub" : "ultra") : "gentle";
+  //   mintV2(umi, { candyMachine: CFG.MAQUINAS[carta], group: grupo,
+  //                 mintArgs: { tokenBurn: {...}, solPayment: {...},
+  //                             allowList: { merkleRoot } } })
   estado("no", "Falta conectar la Candy Machine.", "Candy Machine not wired yet.");
 }
 

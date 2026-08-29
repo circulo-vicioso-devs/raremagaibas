@@ -5,3 +5,6 @@ node_modules/
 .env.*
 *.key
 keypair*.json
+
+# Sugar deja acá las direcciones de cada máquina al desplegar
+deploy/carta-*/cache.json

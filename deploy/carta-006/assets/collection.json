@@ -1,0 +1,16 @@
+{
+  "name": "RareMagaibas · El Génesis",
+  "symbol": "MGB",
+  "description": "Doce cartas hechas por la comunidad MAGAIBA en marzo de 2024. Se acuñan quemando MAGAIBA. Obras bajo CC BY-SA 4.0.",
+  "image": "collection.png",
+  "external_url": "https://circulo-vicioso-devs.github.io/raremagaibas/",
+  "properties": {
+    "files": [
+      {
+        "uri": "collection.png",
+        "type": "image/webp"
+      }
+    ],
+    "category": "image"
+  }
+}

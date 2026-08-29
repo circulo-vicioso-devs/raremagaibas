@@ -12,17 +12,24 @@ export const CFG = {
   PRECIO_GENTLE: 710_000,
   PRECIO_ULTRA: 1_000_000,
 
-  // Tope de la serie: una carta por billetera del club
-  TOPE: 160,
+  // Sin tope por billetera: cada uno acuña tantas como pueda quemar.
+  CLUB: 163,               // billeteras con el airdrop, para la barra
+  CARTAS_META: 163,        // referencia de la barra de cartas acuñadas
+  META_QUEMA: 163 * 710_000,  // referencia de la barra de quemado
 
   // RPC. El público alcanza para leer saldos y anda con CORS, pero tiene límite
   // de pedidos. Si hace falta más, poner acá una key de Helius RESTRINGIDA POR
   // DOMINIO — este repo es público y cualquiera puede leer lo que se escriba acá.
   RPC: "https://api.mainnet-beta.solana.com",
 
-  // Candy Machine de la Serie 0. Mientras esté vacío, el botón explica que la
-  // acuñación todavía no abrió.
-  CANDY_MACHINE: "",
+  // Una Candy Machine por carta: el usuario elige cuál acuñar. Se completan al
+  // desplegar, con la clave = número de serie de la carta.
+  MAQUINAS: {
+    // "001": "…", "002": "…", …
+  },
+
+  // La colección que agrupa las 12 cartas en los marketplaces.
+  COLECCION: "",
 
   // Dirección que recibe el SOL del artista, por carta. Se completa al desplegar.
   TESOROS: {},

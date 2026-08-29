@@ -1,0 +1,40 @@
+{
+  "name": "Magaiba Tokyo #43",
+  "symbol": "MGB",
+  "description": "RareMagaibas · Serie 0 «El Génesis» (2024) · carta 002/012.\n\nLos memes que hizo la comunidad MAGAIBA en marzo de 2024, montados como cartas. Se acuñan quemando MAGAIBA: los tokens se destruyen en la misma transacción que crea esta pieza.\n\nObra bajo CC BY-SA 4.0.",
+  "image": "42.png",
+  "external_url": "https://circulo-vicioso-devs.github.io/raremagaibas/",
+  "attributes": [
+    {
+      "trait_type": "Serie",
+      "value": "0 · El Génesis (2024)"
+    },
+    {
+      "trait_type": "Carta",
+      "value": "002/012"
+    },
+    {
+      "trait_type": "Gentileza",
+      "value": "Gentle"
+    },
+    {
+      "trait_type": "Licencia",
+      "value": "CC BY-SA 4.0"
+    }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "42.png",
+        "type": "image/webp"
+      }
+    ],
+    "category": "image",
+    "creators": [
+      {
+        "address": "PONER_LA_WALLET_QUE_DESPLIEGA",
+        "share": 100
+      }
+    ]
+  }
+}

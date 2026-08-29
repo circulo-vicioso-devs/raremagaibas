@@ -1,0 +1,72 @@
+{
+  "number": 60,
+  "symbol": "MGB",
+  "sellerFeeBasisPoints": 500,
+  "isMutable": true,
+  "isSequential": false,
+  "creators": [
+    {
+      "address": "PONER_LA_WALLET_QUE_DESPLIEGA",
+      "share": 100
+    }
+  ],
+  "uploadMethod": "bundlr",
+  "awsConfig": null,
+  "nftStorageAuthToken": null,
+  "shdwStorageAccount": null,
+  "pinataConfig": null,
+  "hiddenSettings": null,
+  "guards": {
+    "default": null,
+    "groups": [
+      {
+        "label": "gentle",
+        "guards": {
+          "tokenBurn": {
+            "amount": 71000000000000,
+            "mint": "A6rSPi9JmJgVkW6BatsA6MjFYLseizPM2Fnt92coFjf4"
+          },
+          "solPayment": {
+            "value": 0.05,
+            "destination": "PONER_LA_WALLET_QUE_COBRA_EL_SOL"
+          },
+          "allowList": {
+            "merkleRoot": "PEGAR_MERKLE_ROOT_DE_club"
+          }
+        }
+      },
+      {
+        "label": "ultra",
+        "guards": {
+          "tokenBurn": {
+            "amount": 100000000000000,
+            "mint": "A6rSPi9JmJgVkW6BatsA6MjFYLseizPM2Fnt92coFjf4"
+          },
+          "solPayment": {
+            "value": 0.05,
+            "destination": "PONER_LA_WALLET_QUE_COBRA_EL_SOL"
+          },
+          "allowList": {
+            "merkleRoot": "PEGAR_MERKLE_ROOT_DE_club"
+          }
+        }
+      },
+      {
+        "label": "foilclub",
+        "guards": {
+          "tokenBurn": {
+            "amount": 71000000000000,
+            "mint": "A6rSPi9JmJgVkW6BatsA6MjFYLseizPM2Fnt92coFjf4"
+          },
+          "solPayment": {
+            "value": 0.05,
+            "destination": "PONER_LA_WALLET_QUE_COBRA_EL_SOL"
+          },
+          "allowList": {
+            "merkleRoot": "PEGAR_MERKLE_ROOT_DE_foil"
+          }
+        }
+      }
+    ]
+  }
+}
