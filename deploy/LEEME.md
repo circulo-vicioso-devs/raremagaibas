@@ -1,66 +1,57 @@
-# Deploy de la Serie 0
+# Deploy de la Serie 0 — COMPLETO
 
-## Estado (2026-08-29)
+**Las 24 Candy Machines están en mainnet**, cada una con su guard, todas
+agrupadas en una sola colección.
 
 | | |
 |---|---|
-| **Desplegadas** | **21 de 24**, todas con sus guards verificados |
-| Faltan | `carta-011-foil`, `carta-012`, `carta-012-foil` |
-| SOL gastado | 0,4836 |
-| SOL restante | 0,026 |
-| Assets en Arweave | 24/24 subidos **y asentados** |
-| Colección | `DsC9cF8DMYCvFpaJWVGZNZH2J7tEZe4TaYMxBmH2S7ws`, compartida |
+| Colección | `DsC9cF8DMYCvFpaJWVGZNZH2J7tEZe4TaYMxBmH2S7ws` |
+| Máquinas | 24 (12 cartas × gentle/foil), 25 piezas cada una |
+| Wallet | `3ukZwiJ9ciZtdfya9Wc8F8kGewMmhbj6ssYKdB2invYq` |
+| Gastado | ~0,60 SOL · quedan 0,11 |
+| Assets | Arweave, subidos gratis por Turbo |
 
-Las 11 cartas desplegadas ya están en `web/config.js`. La 011 tiene la Gentle
-pero no la foil; la 012 no tiene ninguna.
+Las direcciones están en `web/config.js`. Para regenerarlas:
+`python3 deploy/actualizar-config.py`
 
-## Para terminar
+## Los guards, verificados on-chain
 
-1. **Fondear la wallet** `3ukZwiJ9ciZtdfya9Wc8F8kGewMmhbj6ssYKdB2invYq`
-   con **0,1 SOL** — sobra para las tres que faltan (0,020 cada una).
+| grupo | quema | quién |
+|---|---:|---|
+| `gentle` | 710.000 MAGAIBA | las 166 del club |
+| `ultra` | 1.000.000 | las 166, sale foil |
+| `foil36` | 710.000 | las 36 que nunca vendieron, sale foil |
 
-2. **Desplegar**:
-   ```bash
-   cd deploy && ./desplegar.sh     # sigue por donde quedó, solo, y corta si falta saldo
-   ```
+Los tres cobran 0,05 SOL al tesoro. Merkle roots en `../data/merkle.json`.
 
-3. **Pasar las direcciones al sitio**:
-   ```bash
-   python3 deploy/actualizar-config.py
-   ```
+## Pendiente
 
-4. `git add -A && git commit && git push`
+**Recuperar renta de dos máquinas huérfanas.** Antes de encontrar el fix de la
+colección, `carta-001-foil` y `carta-002` se desplegaron con colección propia y
+se rehicieron. Las viejas quedaron con ~0,034 SOL de renta adentro:
 
-## Lo que falta
+```
+DVYRSYsHEwozeTR2dC6gYCxTCzPnw1F7grCkwUmuy1Fv
+3ThV5e3iQCZijFe52KG8CepjC6i7CXQzKobxMVU81x6T
+```
 
-1. **Esperar que Arweave asiente las 22 restantes.** Verificar con:
-   ```bash
-   cd deploy && python3 - <<'PY'
-   import json,urllib.request,glob
-   for f in sorted(glob.glob('carta-*/cache.json')):
-       c=json.load(open(f))
-       if c['program'].get('candyMachine'): continue
-       try:
-           m=json.load(urllib.request.urlopen(c['items']['0']['metadata_link'],timeout=15))
-           n=len(urllib.request.urlopen(m['image'],timeout=15).read())
-           print(f"  {f.split('/')[0]:<16} {'listo' if n>5000 else 'esperando'}")
-       except Exception: print(f"  {f.split('/')[0]:<16} esperando")
-   PY
-   ```
-   **No desplegar antes de que digan `listo`**: los metadatos son inmutables y
-   una URI rota no se arregla nunca.
+`sugar withdraw` necesita terminal interactiva (pide confirmación), así que hay
+que correrlo desde una terminal normal:
 
-2. **Fondear la wallet.** Faltan ~0,45 SOL para las 22 restantes
-   (0,037 por máquina).
+```bash
+cd deploy/carta-001-foil && sugar withdraw DVYRSYsHEwozeTR2dC6gYCxTCzPnw1F7grCkwUmuy1Fv
+```
 
-3. **Desplegar**, carpeta por carpeta:
-   ```bash
-   cd deploy/carta-002 && sugar deploy && sugar guard add
-   ```
+## El truco de la colección compartida
 
-4. **Pegar las direcciones** en `web/config.js` (`MAQUINAS`).
+`sugar deploy` crea una colección nueva por máquina **aunque el `cache.json`
+traiga `collectionMint`**. Para que la reuse hay que marcar el ítem `-1` como
+`onChain: true`; ahí responde *"Collection mint already deployed"*.
 
-## Bugs que ya están resueltos
+Sin eso, en Magic Eden aparecen 24 colecciones sueltas en vez de una de 12
+cartas. Además, baja el costo por máquina de 0,037 a 0,020 SOL.
+
+## Los seis bugs que hubo que resolver
 
 | problema | solución |
 |---|---|
@@ -68,17 +59,13 @@ pero no la foil; la 012 no tiene ninguna.
 | `"default": null` | va `{}` |
 | falta `ruleSet` | agregado como `null` |
 | nombre on-chain > 32 chars | el foil se marca con ✦ |
-| falta `candyMachineCreator` en cache | lo escribe el uploader |
+| falta `candyMachineCreator` en el cache | lo escribe el uploader |
 | label `foilclub` > 6 chars | renombrado a `foil36` |
+| colección duplicada por máquina | ítem `-1` con `onChain: true` |
 
-## ⚠️ Pendiente de decidir: la colección está partida
+## Lo que falta para que la acuñación funcione
 
-`sugar deploy` crea una colección nueva por máquina aunque el `cache.json`
-traiga `collectionMint` puesto. Hoy hay dos:
-
-- `DsC9cF8DMYCvFpaJWVGZNZH2J7tEZe4TaYMxBmH2S7ws` (carta-001)
-- `CEj9vHx3ZxPfz4vnA79aE7YkA1xjTHZY96VsoBnEQdVJ` (carta-001-foil)
-
-Si sigue así, en Magic Eden se van a ver **24 colecciones sueltas** en vez de
-una de 12 cartas. Antes de desplegar el resto hay que probar
-`sugar collection set <mint>` en una carpeta y confirmar que la reusa.
+`web/mint.js` tiene la wallet, la elegibilidad y el contador andando contra la
+chain. La transacción de acuñar está como comentario: hay que armarla con
+`mintV2` de `@metaplex-foundation/mpl-candy-machine`, eligiendo el grupo
+(`gentle` / `ultra` / `foil36`) y pasando el merkle proof de la billetera.

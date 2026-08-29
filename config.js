@@ -27,12 +27,12 @@ export const CFG = {
   // suyos y no hay forma de que salga una carta mal etiquetada.
   MAQUINAS: {
     "001": {
-        foil: "DVYRSYsHEwozeTR2dC6gYCxTCzPnw1F7grCkwUmuy1Fv",
+        foil: "Ch69kDugSrKSAcus4wXdhyjtMuZo3Y1snW6u8PWdaoD2",
         gentle: "44QWm4EEFt5zioAuBT5WvfA95776J9AESDikompKy8mV"
     },
     "002": {
         foil: "ETresJebu3m5ZDs4dcxdgQrJcpW1aUUBkzxWHx4pPsx8",
-        gentle: "3ThV5e3iQCZijFe52KG8CepjC6i7CXQzKobxMVU81x6T"
+        gentle: "5kMednpevDv6yrRzFkQb2QCV47vJZX8bPNYaR9x3xnob"
     },
     "003": {
         foil: "9WA2Jqp9mapCDS2pkFRm564AQc96westWReoYGKyaoVr",
@@ -67,7 +67,12 @@ export const CFG = {
         gentle: "8R8QL1ryKrK7YWRMFE7nZ5TRmUd2t7dm8ifTUXTdgiZr"
     },
     "011": {
+        foil: "7zNgQMZpGczai4Eg4Z14VQeiwiD3M45EuMuE5VCdYywy",
         gentle: "6Goc51jeNBdG5Rsrv2WRe1AeXvAEvVXzJy85ube6zZGL"
+    },
+    "012": {
+        foil: "Ag91JkGSmLK3eBRN3eSahsX3YhU58Gv7ZBYGy9RJnYih",
+        gentle: "CFXSqe34oCgKN59WZLZmv5jsShQkVodDRNMdbWc3LBqH"
     }
 },
 

@@ -73,7 +73,7 @@ def metadatos(serie, nombre, archivo, edicion, foil):
             + "Obra bajo CC BY-SA 4.0."
         ),
         "image": archivo,
-        "external_url": "https://circulo-vicioso-devs.github.io/raremagaibas/",
+        "external_url": "https://magaiba.xyz/raremagaiba/",
         "attributes": [
             {"trait_type": "Serie", "value": "0 · El Génesis (2024)"},
             {"trait_type": "Carta", "value": f"{serie}/012"},
@@ -143,7 +143,7 @@ COLECCION = {
         "Se acuñan quemando MAGAIBA. Obras bajo CC BY-SA 4.0."
     ),
     "image": "collection.png",
-    "external_url": "https://circulo-vicioso-devs.github.io/raremagaibas/",
+    "external_url": "https://magaiba.xyz/raremagaiba/",
     "properties": {
         "files": [{"uri": "collection.png", "type": "image/webp"}],
         "category": "image",
