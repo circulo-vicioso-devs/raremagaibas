@@ -46,7 +46,7 @@ CARTAS = [
 
 # Cuántas de cada una. Sin tope por billetera: alcanza para que nadie
 # se quede afuera, y lo que no se acuña no existe.
-TIRADA = 40   # por máquina; con foil son 80 por carta
+TIRADA = 25   # por máquina; con foil son 50 por carta, 600 en total
 
 # Se completan antes de desplegar.
 TESORO = "3ukZwiJ9ciZtdfya9Wc8F8kGewMmhbj6ssYKdB2invYq"

@@ -14,7 +14,7 @@ export const CFG = {
 
   // Sin tope por billetera: cada uno acuña tantas como pueda quemar.
   CLUB: 163,               // billeteras con el airdrop, para la barra
-  CARTAS_META: 163,        // referencia de la barra de cartas acuñadas
+  CARTAS_META: 600,        // piezas de la serie
   META_QUEMA: 163 * 710_000,  // referencia de la barra de quemado
 
   // RPC. El público alcanza para leer saldos y anda con CORS, pero tiene límite
