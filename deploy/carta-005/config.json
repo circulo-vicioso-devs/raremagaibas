@@ -16,8 +16,9 @@
   "shdwStorageAccount": null,
   "pinataConfig": null,
   "hiddenSettings": null,
+  "ruleSet": null,
   "guards": {
-    "default": null,
+    "default": {},
     "groups": [
       {
         "label": "gentle",

@@ -56,7 +56,8 @@ AUTORIDAD = "3ukZwiJ9ciZtdfya9Wc8F8kGewMmhbj6ssYKdB2invYq"
 def metadatos(serie, nombre, archivo, edicion, foil):
     nivel = "Ultra Gentle" if foil else "Gentle"
     return {
-        "name": f"{nombre} #{edicion}" + (" · Ultra Gentle" if foil else ""),
+        # el nombre on-chain topea en 32 caracteres: el foil va con ✦
+        "name": f"{nombre} #{edicion}" + (" ✦" if foil else ""),
         "symbol": "MGB",
         "description": (
             f"RareMagaibas · Serie 0 «El Génesis» (2024) · carta {serie}/012.\n\n"
@@ -112,11 +113,12 @@ def config(serie, nombre, foil):
         "shdwStorageAccount": None,
         "pinataConfig": None,
         "hiddenSettings": None,
+        "ruleSet": None,
         # La máquina Gentle cobra 710.000 y entrega el arte normal.
         # La Ultra Gentle entrega el foil: 1.000.000 para el club, y 710.000
         # para las 36 que nunca vendieron.
         "guards": {
-            "default": None,
+            "default": {},
             "groups": (
                 [{"label": "gentle", "guards": guards(GENTLE, "club")}]
                 if not foil else
