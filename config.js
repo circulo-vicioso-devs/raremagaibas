@@ -22,10 +22,11 @@ export const CFG = {
   // DOMINIO — este repo es público y cualquiera puede leer lo que se escriba acá.
   RPC: "https://api.mainnet-beta.solana.com",
 
-  // Una Candy Machine por carta: el usuario elige cuál acuñar. Se completan al
-  // desplegar, con la clave = número de serie de la carta.
+  // Dos Candy Machines por carta: la Gentle entrega el arte normal y la Ultra
+  // Gentle el foil. Los metadatos son inmutables, así que cada una tiene los
+  // suyos y no hay forma de que salga una carta mal etiquetada.
   MAQUINAS: {
-    // "001": "…", "002": "…", …
+    // "001": { gentle: "…", foil: "…" },
   },
 
   // La colección que agrupa las 12 cartas en los marketplaces.

@@ -46,30 +46,32 @@ CARTAS = [
 
 # Cuántas de cada una. Sin tope por billetera: alcanza para que nadie
 # se quede afuera, y lo que no se acuña no existe.
-TIRADA = 60
+TIRADA = 40   # por máquina; con foil son 80 por carta
 
 # Se completan antes de desplegar.
 TESORO = "3ukZwiJ9ciZtdfya9Wc8F8kGewMmhbj6ssYKdB2invYq"
 AUTORIDAD = "3ukZwiJ9ciZtdfya9Wc8F8kGewMmhbj6ssYKdB2invYq"
 
 
-def metadatos(serie, nombre, archivo, edicion):
+def metadatos(serie, nombre, archivo, edicion, foil):
+    nivel = "Ultra Gentle" if foil else "Gentle"
     return {
-        "name": f"{nombre} #{edicion}",
+        "name": f"{nombre} #{edicion}" + (" · Ultra Gentle" if foil else ""),
         "symbol": "MGB",
         "description": (
             f"RareMagaibas · Serie 0 «El Génesis» (2024) · carta {serie}/012.\n\n"
             "Los memes que hizo la comunidad MAGAIBA en marzo de 2024, montados "
             "como cartas. Se acuñan quemando MAGAIBA: los tokens se destruyen en "
             "la misma transacción que crea esta pieza.\n\n"
-            "Obra bajo CC BY-SA 4.0."
+            + ("Ultra Gentle: la versión foil.\n\n" if foil else "")
+            + "Obra bajo CC BY-SA 4.0."
         ),
         "image": archivo,
         "external_url": "https://circulo-vicioso-devs.github.io/raremagaibas/",
         "attributes": [
             {"trait_type": "Serie", "value": "0 · El Génesis (2024)"},
             {"trait_type": "Carta", "value": f"{serie}/012"},
-            {"trait_type": "Gentileza", "value": "Gentle"},
+            {"trait_type": "Gentileza", "value": nivel},
             {"trait_type": "Licencia", "value": "CC BY-SA 4.0"},
         ],
         "properties": {
@@ -80,7 +82,7 @@ def metadatos(serie, nombre, archivo, edicion):
     }
 
 
-def config(serie, nombre):
+def config(serie, nombre, foil):
     """La config de Sugar para una carta.
 
     Tres grupos de guards:
@@ -101,7 +103,7 @@ def config(serie, nombre):
         "number": TIRADA,
         "symbol": "MGB",
         "sellerFeeBasisPoints": 500,
-        "isMutable": True,
+        "isMutable": False,   # inmutable: los metadatos no se tocan nunca más
         "isSequential": False,
         "creators": [{"address": AUTORIDAD, "share": 100}],
         "uploadMethod": "bundlr",          # Arweave, pago único
@@ -110,13 +112,17 @@ def config(serie, nombre):
         "shdwStorageAccount": None,
         "pinataConfig": None,
         "hiddenSettings": None,
+        # La máquina Gentle cobra 710.000 y entrega el arte normal.
+        # La Ultra Gentle entrega el foil: 1.000.000 para el club, y 710.000
+        # para las 36 que nunca vendieron.
         "guards": {
             "default": None,
-            "groups": [
-                {"label": "gentle",   "guards": guards(GENTLE, "club")},
-                {"label": "ultra",    "guards": guards(ULTRA,  "club")},
-                {"label": "foilclub", "guards": guards(GENTLE, "foil")},
-            ],
+            "groups": (
+                [{"label": "gentle", "guards": guards(GENTLE, "club")}]
+                if not foil else
+                [{"label": "ultra",    "guards": guards(ULTRA,  "club")},
+                 {"label": "foilclub", "guards": guards(GENTLE, "foil")}]
+            ),
         },
     }
 
@@ -141,19 +147,21 @@ def main():
     img = os.path.join(RAIZ, "web", "img")
     hechas, faltan = 0, []
     for serie, nombre, arch, cut in CARTAS:
-        src = os.path.join(img, arch + ".webp")
+      for foil in (False, True):
+        src = os.path.join(img, "foil", arch + "f.webp") if foil \
+              else os.path.join(img, arch + ".webp")
         if not os.path.exists(src):
-            faltan.append((serie, nombre, arch))
+            faltan.append((serie, nombre, os.path.basename(src)))
             continue
-        d = os.path.join(AQUI, f"carta-{serie}")
+        d = os.path.join(AQUI, f"carta-{serie}" + ("-foil" if foil else ""))
         a = os.path.join(d, "assets")
         os.makedirs(a, exist_ok=True)
 
         for i in range(TIRADA):
             shutil.copy(src, os.path.join(a, f"{i}.png"))
             with open(os.path.join(a, f"{i}.json"), "w") as f:
-                json.dump(metadatos(serie, nombre, f"{i}.png", i + 1), f, indent=2,
-                          ensure_ascii=False)
+                json.dump(metadatos(serie, nombre, f"{i}.png", i + 1, foil), f,
+                          indent=2, ensure_ascii=False)
 
         # la colección va igual en las doce: Sugar la sube una vez y se reusa
         shutil.copy(os.path.join(img, "bicho.webp"), os.path.join(a, "collection.png"))
@@ -161,9 +169,10 @@ def main():
             json.dump(COLECCION, f, indent=2, ensure_ascii=False)
 
         with open(os.path.join(d, "config.json"), "w") as f:
-            json.dump(config(serie, nombre), f, indent=2, ensure_ascii=False)
+            json.dump(config(serie, nombre, foil), f, indent=2, ensure_ascii=False)
         hechas += 1
-        print(f"  carta-{serie}  {nombre:<24} {TIRADA} ediciones")
+        et = "Ultra Gentle" if foil else "Gentle"
+        print(f"  carta-{serie}{'-foil' if foil else '':<5}  {nombre:<24} {et}")
 
     print(f"\n  {hechas} carpetas listas en deploy/")
     if faltan:

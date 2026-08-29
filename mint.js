@@ -154,7 +154,8 @@ function estado(clase, es, en) {
 // ---------- acuñar ----------
 export async function acunar(carta, foil) {
   if (!wallet) { await conectar(); return; }
-  if (!CFG.MAQUINAS[carta]) {
+  const maq = CFG.MAQUINAS[carta]?.[foil ? "foil" : "gentle"];
+  if (!maq) {
     estado("no",
       "La acuñación todavía no abrió. Cuando abra, este mismo botón la ejecuta.",
       "Minting hasn't opened yet. When it does, this same button runs it.");
@@ -163,7 +164,7 @@ export async function acunar(carta, foil) {
   // Con las máquinas desplegadas, acá va la transacción. Una por carta, y el
   // grupo del guard decide si es gentle, ultra o el foil sin plus de las 36.
   //   const grupo = foil ? (esDeLas36 ? "foilclub" : "ultra") : "gentle";
-  //   mintV2(umi, { candyMachine: CFG.MAQUINAS[carta], group: grupo,
+  //   mintV2(umi, { candyMachine: maq, group: grupo,
   //                 mintArgs: { tokenBurn: {...}, solPayment: {...},
   //                             allowList: { merkleRoot } } })
   estado("no", "Falta conectar la Candy Machine.", "Candy Machine not wired yet.");
