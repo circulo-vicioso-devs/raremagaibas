@@ -8,10 +8,12 @@
     "esbuild": "^0.28.2"
   },
   "dependencies": {
+    "@ardrive/turbo-sdk": "^1.42.0",
     "@metaplex-foundation/mpl-candy-machine": "^6.1.0",
     "@metaplex-foundation/mpl-token-metadata": "^3.4.0",
     "@metaplex-foundation/umi-bundle-defaults": "^1.5.1",
-    "@metaplex-foundation/umi-signer-wallet-adapters": "^1.5.1"
+    "@metaplex-foundation/umi-signer-wallet-adapters": "^1.5.1",
+    "bs58": "^6.0.0"
   },
   "private": true,
   "type": "module"
