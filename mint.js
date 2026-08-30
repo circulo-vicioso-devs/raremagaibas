@@ -184,6 +184,36 @@ function rpcAbsoluto() {
   return /^https?:/i.test(CFG.RPC) ? CFG.RPC : new URL(CFG.RPC, location.origin).href;
 }
 
+// sendAndConfirm() de umi confirma por WebSocket (signatureSubscribe), y el
+// proxy /rpc es sólo HTTP: la promesa nunca resuelve y la acuñación se cuelga
+// después de firmar. Se manda y se consulta el estado por HTTP, que es lo que
+// el proxy sí deja pasar.
+async function mandar(s, umi, tb) {
+  const firma = await tb.send(umi);
+  const f58 = s.base58.deserialize(firma)[0];
+
+  for (let i = 0; i < 90; i++) {
+    await new Promise((r) => setTimeout(r, 1000));
+    let st;
+    try {
+      const r = await fetch(rpcAbsoluto(), {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          jsonrpc: "2.0", id: 1, method: "getSignatureStatuses",
+          params: [[f58], { searchTransactionHistory: true }],
+        }),
+      });
+      st = (await r.json())?.result?.value?.[0];
+    } catch { continue; }   // un corte de red no cancela la espera
+
+    if (!st) continue;
+    if (st.err) throw new Error(`La red rechazó la transacción: ${JSON.stringify(st.err)}`);
+    if (st.confirmationStatus === "confirmed" || st.confirmationStatus === "finalized") return f58;
+  }
+  throw new Error(`No confirmó en 90 s. Puede haber entrado igual: revisá https://solscan.io/tx/${f58}`);
+}
+
 let sdk = null;
 async function cargarSdk() {
   if (!sdk) sdk = await import("./vendor-mint.js");
@@ -249,13 +279,12 @@ export async function acunar(carta, foil) {
     if (tbRoute) {
       estadoAcunar("es", "Firma 1 de 2: habilitar la billetera.",
                    "Signature 1 of 2: enable the wallet.");
-      await tbRoute.sendAndConfirm(umi);
+      await mandar(s, umi, tbRoute);
     }
 
     estadoAcunar("es", tbRoute ? "Firma 2 de 2: acuñar." : "Firmá para acuñar.",
                  tbRoute ? "Signature 2 of 2: mint." : "Sign to mint.");
-    const r = await tbMint.sendAndConfirm(umi);
-    const firma = s.base58.deserialize(r.signature)[0];
+    const firma = await mandar(s, umi, tbMint);
 
     const url = `https://solscan.io/tx/${firma}`;
     estadoAcunar("si",
