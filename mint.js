@@ -308,12 +308,16 @@ export async function acunar(carta, foil, nombre) {
     estadoAcunar("si",
       `🎴 Es tuya. Acuñaste ${cual} en <b>${clase}</b> y quemaste <b>${quema} MAGAIBA</b>, `
       + `que ya no existen más.${regalo}<br>`
-      + `<a href="${url}" target="_blank" rel="noopener">Ver la transacción</a> · `
-      + `Va a aparecer en tu billetera en unos minutos.`,
+      + `<a href="${url}" target="_blank" rel="noopener">Ver la transacción</a><br>`
+      + `<span class="tip">Si no la ves en Phantom, está oculta: <b>Collectibles → los tres `
+      + `puntos → Manage Collectibles</b>, y la activás. Phantom esconde las colecciones que `
+      + `todavía no conoce. <a href="https://help.phantom.com/hc/en-us/articles/12983715032083-How-to-manage-hidden-NFTs-in-Phantom" target="_blank" rel="noopener">Cómo se hace</a></span>`,
       `🎴 It's yours. You minted ${cualEn} in <b>${clase}</b> and burned <b>${quemaEn} MAGAIBA</b>, `
       + `gone for good.${regaloEn}<br>`
-      + `<a href="${url}" target="_blank" rel="noopener">See the transaction</a> · `
-      + `It'll show up in your wallet in a few minutes.`);
+      + `<a href="${url}" target="_blank" rel="noopener">See the transaction</a><br>`
+      + `<span class="tip">If you don't see it in Phantom, it's hidden: <b>Collectibles → three `
+      + `dots → Manage Collectibles</b>, then toggle it on. Phantom hides collections it doesn't `
+      + `know yet. <a href="https://help.phantom.com/hc/en-us/articles/12983715032083-How-to-manage-hidden-NFTs-in-Phantom" target="_blank" rel="noopener">How to do it</a></span>`);
 
     await refrescarContador();
     await revisar(true);   // sin pisar el mensaje
