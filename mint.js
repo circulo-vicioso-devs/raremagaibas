@@ -177,6 +177,13 @@ function estadoAcunar(clase, es, en) {
 
 // El bundle con umi + mpl-candy-machine. Se baja una sola vez, y recién cuando
 // hace falta: en la primera acuñación de la sesión.
+// CFG.RPC es relativa ("/rpc") porque el proxy vive en el mismo dominio. El
+// fetch del contador la resuelve solo, pero umi exige URL absoluta y si no
+// tira "Endpoint URL must start with http: or https:".
+function rpcAbsoluto() {
+  return /^https?:/i.test(CFG.RPC) ? CFG.RPC : new URL(CFG.RPC, location.origin).href;
+}
+
 let sdk = null;
 async function cargarSdk() {
   if (!sdk) sdk = await import("./vendor-mint.js");
@@ -221,7 +228,7 @@ export async function acunar(carta, foil) {
   try {
     estadoAcunar("es", "Preparando la transacción…", "Preparing the transaction…");
     const s = await cargarSdk();
-    const umi = s.createUmi(CFG.RPC)
+    const umi = s.createUmi(rpcAbsoluto())
       .use(s.mplTokenMetadata())
       .use(s.mplCandyMachine())
       .use(s.walletAdapterIdentity(wallet.prov));
