@@ -224,9 +224,12 @@ async function cargarSdk() {
 // entre "no anduvo" y saber qué hacer.
 function traducir(e) {
   const t = (e?.message || String(e));
-  if (/NotEnoughSOL|6018/.test(t))
-    return ["Te falta SOL para el mint. Hacen falta 0,05 SOL más las comisiones de red.",
-            "Not enough SOL. You need 0.05 SOL plus network fees."];
+  // El guard solPayment avisa antes de empezar; el "insufficient lamports" salta
+  // más tarde, cuando ya pagó el solPayment y no le alcanza para las rentas del
+  // NFT. Los dos son lo mismo para quien está del otro lado: falta SOL.
+  if (/NotEnoughSOL|6018|insufficient lamports/i.test(t))
+    return ["Te falta SOL. Una acuñación necesita unos 0,07 SOL: 0,05 del precio y el resto en comisiones y renta de las cuentas del NFT.",
+            "Not enough SOL. A mint needs about 0.07 SOL: 0.05 for the price and the rest in fees and rent for the NFT accounts."];
   if (/NotEnoughTokens|6015|insufficient funds/i.test(t))
     return ["No te alcanzan los MAGAIBA para quemar.",
             "You don't have enough MAGAIBA to burn."];
@@ -241,7 +244,10 @@ function traducir(e) {
   if (/blockhash|expired|timeout/i.test(t))
     return ["La transacción venció antes de confirmar. Probá de nuevo.",
             "The transaction expired before confirming. Try again."];
-  return [`No se pudo acuñar: ${t}`, `Mint failed: ${t}`];
+  // Los errores del SDK vienen con el volcado entero de logs del programa.
+  // Se muestra sólo la primera línea, y el resto queda en la consola.
+  const corto = t.split("\n")[0].split(" Source:")[0].slice(0, 180);
+  return [`No se pudo acuñar: ${corto}`, `Mint failed: ${corto}`];
 }
 
 export async function acunar(carta, foil) {
