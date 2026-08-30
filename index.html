@@ -101,6 +101,8 @@ li::marker{color:var(--rosa-pop)}
 
 /* ---- wallet ---- */
 .wallet{display:flex;flex-direction:column;gap:.7rem;align-items:center;margin:0 0 2.4rem}
+.wstate .premio{color:var(--oro);font-weight:700}
+.wstate a{color:inherit;text-decoration:underline}
 .aviso-wallet{max-width:46ch;margin:.6rem auto 0;font-size:.82rem;
   line-height:1.45;color:var(--ink-3);text-align:center}
 .wstate{font-size:.86rem;color:var(--ink-2);text-align:center;max-width:52ch;margin:0;
@@ -565,7 +567,7 @@ function pinta(){
         ${foil ? '<div class="foil1"></div><div class="foil2"></div>' : ''}
       </div>
     </article>
-    <button class="boton${foil ? ' bfoil' : ''}" data-carta="${c.s}">${T[lang].acunar} · ${(foil?1000000:710000).toLocaleString(T[lang].loc)}</button>
+    <button class="boton${foil ? ' bfoil' : ''}" data-carta="${c.s}" data-nombre="${c.n}">${T[lang].acunar} · ${(foil?1000000:710000).toLocaleString(T[lang].loc)}</button>
     </div>`).join('');
 }
 
@@ -581,7 +583,7 @@ grilla.addEventListener('click', (e) => {
   const b = e.target.closest('button[data-carta]');
   if (!b) return;
   b.disabled = true;
-  acunar(b.dataset.carta, foil).finally(() => { b.disabled = false; });
+  acunar(b.dataset.carta, foil, b.dataset.nombre).finally(() => { b.disabled = false; });
 });
 
 for (const b of document.querySelectorAll('.lang'))

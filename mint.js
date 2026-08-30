@@ -117,7 +117,9 @@ async function conectar() {
 
 function corto(a) { return a.slice(0, 4) + "…" + a.slice(-4); }
 
-async function revisar() {
+// silencioso: actualiza los flags y el saldo sin tocar el cartel, para no
+// pisar el mensaje de éxito recién puesto.
+async function revisar(silencioso) {
   const es = document.documentElement.lang !== "en";
   estado("es", "Leyendo tu billetera…", "Reading your wallet…");
 
@@ -150,7 +152,7 @@ async function revisar() {
     txtEs = `${corto(wallet.address)} · ${s} MAGAIBA. Te faltan ${falta} para llegar a los 710.000 del airdrop.`;
     txtEn = `${corto(wallet.address)} · ${s} MAGAIBA. You're ${falta} short of the 710,000 from the airdrop.`;
   }
-  estado(clase, txtEs, txtEn);
+  if (!silencioso) estado(clase, txtEs, txtEn);
   document.documentElement.dataset.elegible = (enClub || alcanza) ? "si" : "no";
   document.documentElement.dataset.foilgratis = enFoil ? "si" : "no";
 }
@@ -250,7 +252,7 @@ function traducir(e) {
   return [`No se pudo acuñar: ${corto}`, `Mint failed: ${corto}`];
 }
 
-export async function acunar(carta, foil) {
+export async function acunar(carta, foil, nombre) {
   if (!wallet) { await conectar(); return; }
 
   const maquina = CFG.MAQUINAS[carta]?.[foil ? "foil" : "gentle"];
@@ -293,12 +295,28 @@ export async function acunar(carta, foil) {
     const firma = await mandar(s, umi, tbMint);
 
     const url = `https://solscan.io/tx/${firma}`;
+    const quema = fmt(grupo === "ultra" ? CFG.PRECIO_ULTRA : CFG.PRECIO_GENTLE, "es-AR");
+    const quemaEn = fmt(grupo === "ultra" ? CFG.PRECIO_ULTRA : CFG.PRECIO_GENTLE, "en-US");
+    const clase = foil ? "Ultra Gentle" : "Gentle";
+    const cual = nombre ? `<b>${nombre}</b>` : `la carta ${carta}`;
+    const cualEn = nombre ? `<b>${nombre}</b>` : `card ${carta}`;
+    const regalo = grupo === "foil36"
+      ? ' <span class="premio">El foil no te lo cobramos: estás en las 36.</span>' : "";
+    const regaloEn = grupo === "foil36"
+      ? ' <span class="premio">The foil is on us: you\'re one of the 36.</span>' : "";
+
     estadoAcunar("si",
-      `Listo. Quemaste ${fmt(grupo === "ultra" ? CFG.PRECIO_ULTRA : CFG.PRECIO_GENTLE, "es-AR")} MAGAIBA. <a href="${url}" target="_blank" rel="noopener">Ver la transacción</a>`,
-      `Done. You burned ${fmt(grupo === "ultra" ? CFG.PRECIO_ULTRA : CFG.PRECIO_GENTLE, "en-US")} MAGAIBA. <a href="${url}" target="_blank" rel="noopener">See the transaction</a>`);
+      `🎴 Es tuya. Acuñaste ${cual} en <b>${clase}</b> y quemaste <b>${quema} MAGAIBA</b>, `
+      + `que ya no existen más.${regalo}<br>`
+      + `<a href="${url}" target="_blank" rel="noopener">Ver la transacción</a> · `
+      + `Va a aparecer en tu billetera en unos minutos.`,
+      `🎴 It's yours. You minted ${cualEn} in <b>${clase}</b> and burned <b>${quemaEn} MAGAIBA</b>, `
+      + `gone for good.${regaloEn}<br>`
+      + `<a href="${url}" target="_blank" rel="noopener">See the transaction</a> · `
+      + `It'll show up in your wallet in a few minutes.`);
 
     await refrescarContador();
-    await revisar();
+    await revisar(true);   // sin pisar el mensaje
   } catch (e) {
     const [es, en] = traducir(e);
     estadoAcunar("no", es, en);
