@@ -162,6 +162,17 @@ function estado(clase, es, en) {
   c.innerHTML = `<span class="l-es">${es}</span><span class="l-en">${en}</span>`;
 }
 
+// El cartel de estado vive arriba de la grilla, así que al acuñar desde una
+// carta queda fuera de pantalla y parece que no pasó nada. Cuando el mensaje
+// viene de un clic en una carta, se lo trae a la vista.
+function estadoAcunar(clase, es, en) {
+  estado(clase, es, en);
+  const c = $("wstate");
+  if (c && typeof c.scrollIntoView === "function") {
+    c.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+}
+
 // ---------- acuñar ----------
 
 // El bundle con umi + mpl-candy-machine. Se baja una sola vez, y recién cuando
@@ -201,14 +212,14 @@ export async function acunar(carta, foil) {
 
   const maquina = CFG.MAQUINAS[carta]?.[foil ? "foil" : "gentle"];
   if (!maquina) {
-    estado("no",
+    estadoAcunar("no",
       "La acuñación todavía no abrió. Cuando abra, este mismo botón la ejecuta.",
       "Minting hasn't opened yet. When it does, this same button runs it.");
     return;
   }
 
   try {
-    estado("es", "Preparando la transacción…", "Preparing the transaction…");
+    estadoAcunar("es", "Preparando la transacción…", "Preparing the transaction…");
     const s = await cargarSdk();
     const umi = s.createUmi(CFG.RPC)
       .use(s.mplTokenMetadata())
@@ -229,18 +240,18 @@ export async function acunar(carta, foil) {
     // El proof va aparte: juntas las dos instrucciones pasan los 1.232 bytes.
     // La PDA queda en la chain, así que esto se firma una vez por carta.
     if (tbRoute) {
-      estado("es", "Firma 1 de 2: habilitar la billetera.",
+      estadoAcunar("es", "Firma 1 de 2: habilitar la billetera.",
                    "Signature 1 of 2: enable the wallet.");
       await tbRoute.sendAndConfirm(umi);
     }
 
-    estado("es", tbRoute ? "Firma 2 de 2: acuñar." : "Firmá para acuñar.",
+    estadoAcunar("es", tbRoute ? "Firma 2 de 2: acuñar." : "Firmá para acuñar.",
                  tbRoute ? "Signature 2 of 2: mint." : "Sign to mint.");
     const r = await tbMint.sendAndConfirm(umi);
     const firma = s.base58.deserialize(r.signature)[0];
 
     const url = `https://solscan.io/tx/${firma}`;
-    estado("si",
+    estadoAcunar("si",
       `Listo. Quemaste ${fmt(grupo === "ultra" ? CFG.PRECIO_ULTRA : CFG.PRECIO_GENTLE, "es-AR")} MAGAIBA. <a href="${url}" target="_blank" rel="noopener">Ver la transacción</a>`,
       `Done. You burned ${fmt(grupo === "ultra" ? CFG.PRECIO_ULTRA : CFG.PRECIO_GENTLE, "en-US")} MAGAIBA. <a href="${url}" target="_blank" rel="noopener">See the transaction</a>`);
 
@@ -248,7 +259,7 @@ export async function acunar(carta, foil) {
     await revisar();
   } catch (e) {
     const [es, en] = traducir(e);
-    estado("no", es, en);
+    estadoAcunar("no", es, en);
     console.error(e);
   }
 }

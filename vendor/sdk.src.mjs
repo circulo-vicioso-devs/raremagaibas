@@ -3,6 +3,8 @@
 //
 //   npm run build   →   vendor-mint.js
 
+import "./shim.js";   // primero: define el Buffer global
+
 export { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 export { walletAdapterIdentity } from "@metaplex-foundation/umi-signer-wallet-adapters";
 export { mplTokenMetadata } from "@metaplex-foundation/mpl-token-metadata";
