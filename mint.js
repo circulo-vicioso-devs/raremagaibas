@@ -64,15 +64,23 @@ export async function refrescarContador() {
     const quemado = Math.max(0, CFG.SUPPLY_BASE - supply);
     // piso de cartas: si todas fueran Gentle. No exagera.
     const hechas = Math.floor(quemado / CFG.PRECIO_GENTLE);
-    const meta = CFG.META_QUEMA;
+    // El tope sale de la lista real, no de una constante: es la que produjo el
+    // merkle root que está on-chain, así que no puede desincronizarse.
+    const club = listas.club.length;
+    const meta = club * CFG.PRECIO_GENTLE;
     const loc = document.documentElement.lang === "en" ? "en-US" : "es-AR";
+
+    // La etiqueta del tope también se escribe desde acá, por lo mismo. Hay una
+    // por idioma: el CSS muestra la que corresponde.
+    if ($("m-tope"))    $("m-tope").textContent    = fmt(meta, "es-AR");
+    if ($("m-tope-en")) $("m-tope-en").textContent = fmt(meta, "en-US");
 
     $("m-quemado").textContent = fmt(quemado, loc);
     $("m-hechas").textContent = fmt(hechas, loc);
     $("m-quedan").textContent = fmt(coleccionistas, loc);
     $("b-quemado").style.width = (quemado / meta * 100).toFixed(1) + "%";
     $("m-barra").style.width = Math.min(100, hechas / CFG.CARTAS_META * 100).toFixed(1) + "%";
-    $("b-quedan").style.width = Math.min(100, coleccionistas / CFG.CLUB * 100).toFixed(1) + "%";
+    $("b-quedan").style.width = Math.min(100, coleccionistas / club * 100).toFixed(1) + "%";
   } catch (e) {
     console.warn("no se pudo leer el supply:", e.message);
   }

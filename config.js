@@ -13,9 +13,12 @@ export const CFG = {
   PRECIO_ULTRA: 1_000_000,
 
   // Sin tope por billetera: cada uno acuña tantas como pueda quemar.
-  CLUB: 163,               // billeteras con el airdrop, para la barra
-  CARTAS_META: 600,        // piezas de la serie
-  META_QUEMA: 163 * 710_000,  // referencia de la barra de quemado
+  //
+  // CLUB y META_QUEMA NO se ponen a mano: los deriva mint.js de allowlist.json,
+  // que es la lista real desde la que se calculó el merkle root que está
+  // on-chain. Hardcodearlos ya los había desincronizado (decía 163 con una
+  // lista de 166, y el HTML mostraba un tope de otro modelo).
+  CARTAS_META: 600,        // 12 cartas x 25 gentle + 12 x 25 foil
 
   // RPC. Va contra Helius, que hace falta porque getAssetsByGroup es un método
   // DAS que el RPC público no tiene (sin él, el contador de coleccionistas da 0).
