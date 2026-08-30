@@ -5,7 +5,8 @@
     "build": "node build.mjs"
   },
   "devDependencies": {
-    "esbuild": "^0.28.2"
+    "esbuild": "^0.28.2",
+    "jsdom": "^29.1.1"
   },
   "dependencies": {
     "@ardrive/turbo-sdk": "^1.42.0",

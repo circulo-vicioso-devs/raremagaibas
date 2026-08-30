@@ -24,13 +24,17 @@ DESTINO="$LANDING/raremagaiba"
   exit 1
 }
 
-echo "==> Copiando el sitio a $DESTINO"
+echo "==> Copiando los recursos a $DESTINO"
 mkdir -p "$DESTINO"
+# index.html NO va acá: la página se genera por idioma más abajo. Y README.md
+# tampoco: es documentación de desarrollo, no tiene por qué servirse al público.
 rsync -a --delete \
-  "$AQUI/index.html" "$AQUI/mint.js" "$AQUI/config.js" \
-  "$AQUI/acunacion.js" "$AQUI/vendor-mint.js" \
-  "$AQUI/allowlist.json" "$AQUI/README.md" "$AQUI/img" \
+  "$AQUI/mint.js" "$AQUI/config.js" "$AQUI/acunacion.js" \
+  "$AQUI/vendor-mint.js" "$AQUI/allowlist.json" "$AQUI/img" \
   "$DESTINO/"
+
+echo "==> Generando /es/raremagaiba/ y /en/raremagaiba/"
+python3 "$(dirname "$AQUI")/cartas-idiomas.py"
 
 MSG="${1:-Actualiza RareMagaibas}"
 
