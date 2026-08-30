@@ -6,10 +6,13 @@
 //   · dice si está en la lista del club y si le toca el foil sin plus
 //   · lee el supply del token y muestra cuánto se quemó desde que abrió
 //
-// Lo que falta es la acuñación en sí: necesita la Candy Machine desplegada.
-// Cuando exista, se pone su dirección en config.js y se conecta acá abajo.
+//   · acuña: dos transacciones, el proof del allowList y el mint
+//
+// El SDK de Metaplex pesa ~292 KB comprimido, así que se carga recién cuando
+// alguien aprieta acuñar. La página no lo paga de entrada.
 
 import { CFG } from "./config.js";
+import { construir, grupoPara, listaDe } from "./acunacion.js";
 
 const $ = (id) => document.getElementById(id);
 const fmt = (n, loc) => n.toLocaleString(loc || "es-AR");
@@ -152,22 +155,94 @@ function estado(clase, es, en) {
 }
 
 // ---------- acuñar ----------
+
+// El bundle con umi + mpl-candy-machine. Se baja una sola vez, y recién cuando
+// hace falta: en la primera acuñación de la sesión.
+let sdk = null;
+async function cargarSdk() {
+  if (!sdk) sdk = await import("./vendor-mint.js");
+  return sdk;
+}
+
+// Los errores del Candy Guard llegan como códigos. Traducirlos es la diferencia
+// entre "no anduvo" y saber qué hacer.
+function traducir(e) {
+  const t = (e?.message || String(e));
+  if (/NotEnoughSOL|6018/.test(t))
+    return ["Te falta SOL para el mint. Hacen falta 0,05 SOL más las comisiones de red.",
+            "Not enough SOL. You need 0.05 SOL plus network fees."];
+  if (/NotEnoughTokens|6015|insufficient funds/i.test(t))
+    return ["No te alcanzan los MAGAIBA para quemar.",
+            "You don't have enough MAGAIBA to burn."];
+  if (/AddressNotFoundInAllowedList|allow ?list|6008/i.test(t))
+    return ["Esta billetera no está en la lista.",
+            "This wallet isn't on the list."];
+  if (/CandyMachineEmpty|6001|index greater/i.test(t))
+    return ["No quedan ediciones de esta carta.",
+            "No editions left for this card."];
+  if (/User rejected|rejected the request|4001/i.test(t))
+    return ["Cancelaste la firma.", "You cancelled the signature."];
+  if (/blockhash|expired|timeout/i.test(t))
+    return ["La transacción venció antes de confirmar. Probá de nuevo.",
+            "The transaction expired before confirming. Try again."];
+  return [`No se pudo acuñar: ${t}`, `Mint failed: ${t}`];
+}
+
 export async function acunar(carta, foil) {
   if (!wallet) { await conectar(); return; }
-  const maq = CFG.MAQUINAS[carta]?.[foil ? "foil" : "gentle"];
-  if (!maq) {
+
+  const maquina = CFG.MAQUINAS[carta]?.[foil ? "foil" : "gentle"];
+  if (!maquina) {
     estado("no",
       "La acuñación todavía no abrió. Cuando abra, este mismo botón la ejecuta.",
       "Minting hasn't opened yet. When it does, this same button runs it.");
     return;
   }
-  // Con las máquinas desplegadas, acá va la transacción. Una por carta, y el
-  // grupo del guard decide si es gentle, ultra o el foil sin plus de las 36.
-  //   const grupo = foil ? (esDeLas36 ? "foilclub" : "ultra") : "gentle";
-  //   mintV2(umi, { candyMachine: maq, group: grupo,
-  //                 mintArgs: { tokenBurn: {...}, solPayment: {...},
-  //                             allowList: { merkleRoot } } })
-  estado("no", "Falta conectar la Candy Machine.", "Candy Machine not wired yet.");
+
+  try {
+    estado("es", "Preparando la transacción…", "Preparing the transaction…");
+    const s = await cargarSdk();
+    const umi = s.createUmi(CFG.RPC)
+      .use(s.mplTokenMetadata())
+      .use(s.mplCandyMachine())
+      .use(s.walletAdapterIdentity(wallet.prov));
+
+    const enFoil36 = listas.foil.includes(wallet.address);
+    const grupo = grupoPara(foil, enFoil36);
+    const lista = listaDe(grupo, listas);
+
+    const { tbRoute, tbMint } = await construir(s, umi, {
+      maquina, grupo, lista,
+      minter: wallet.address,
+      mintToken: CFG.MINT,
+      tesoro: CFG.TESORO,
+    });
+
+    // El proof va aparte: juntas las dos instrucciones pasan los 1.232 bytes.
+    // La PDA queda en la chain, así que esto se firma una vez por carta.
+    if (tbRoute) {
+      estado("es", "Firma 1 de 2: habilitar la billetera.",
+                   "Signature 1 of 2: enable the wallet.");
+      await tbRoute.sendAndConfirm(umi);
+    }
+
+    estado("es", tbRoute ? "Firma 2 de 2: acuñar." : "Firmá para acuñar.",
+                 tbRoute ? "Signature 2 of 2: mint." : "Sign to mint.");
+    const r = await tbMint.sendAndConfirm(umi);
+    const firma = s.base58.deserialize(r.signature)[0];
+
+    const url = `https://solscan.io/tx/${firma}`;
+    estado("si",
+      `Listo. Quemaste ${fmt(grupo === "ultra" ? CFG.PRECIO_ULTRA : CFG.PRECIO_GENTLE, "es-AR")} MAGAIBA. <a href="${url}" target="_blank" rel="noopener">Ver la transacción</a>`,
+      `Done. You burned ${fmt(grupo === "ultra" ? CFG.PRECIO_ULTRA : CFG.PRECIO_GENTLE, "en-US")} MAGAIBA. <a href="${url}" target="_blank" rel="noopener">See the transaction</a>`);
+
+    await refrescarContador();
+    await revisar();
+  } catch (e) {
+    const [es, en] = traducir(e);
+    estado("no", es, en);
+    console.error(e);
+  }
 }
 
 // ---------- arranque ----------

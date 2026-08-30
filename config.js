@@ -82,6 +82,8 @@ export const CFG = {
   // La colección que agrupa las 12 cartas en los marketplaces.
   COLECCION: "DsC9cF8DMYCvFpaJWVGZNZH2J7tEZe4TaYMxBmH2S7ws",
 
-  // Dirección que recibe el SOL del artista, por carta. Se completa al desplegar.
-  TESOROS: {},
+  // Destino del solPayment. Está fijado en los guards on-chain: ponerlo mal acá
+  // no abarata nada, la transacción se rechaza. Va para que el navegador pueda
+  // nombrar la cuenta al armar el mint.
+  TESORO: "3ukZwiJ9ciZtdfya9Wc8F8kGewMmhbj6ssYKdB2invYq",
 };

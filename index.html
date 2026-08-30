@@ -475,7 +475,7 @@ community. Minting burns tokens, and they are gone for good.</span></p>
 </div>
 
 <script type="module">
-import { iniciarMint, acunar } from "./mint.js";
+import { iniciarMint, acunar, refrescarContador } from "./mint.js";
 
 const CARTAS = [
   {n:"Magaiba",                s:"001", bg:"img/bg.webp", cut:"img/cut1.webp",  cw:"84%", cr:"-10%", cb:"-6%"},
@@ -491,8 +491,6 @@ const CARTAS = [
   {n:"Magaiba Oracle",         s:"011", src:"img/c011.webp", op:"64% 40%"},
   {n:"Magaiba Fuji",           s:"012", src:"img/c012.webp", op:"50% 44%"},
 ];
-const ESTADO = {quemado:0, hechas:0, total:160, meta:160000000};
-
 const T = {
   es: {acunar:"Acuñar", gentle:"GENTLE", ultra:"ULTRA GENTLE", loc:"es-AR"},
   en: {acunar:"Mint",   gentle:"GENTLE", ultra:"ULTRA GENTLE", loc:"en-US"},
@@ -504,7 +502,7 @@ function ponIdioma(l){
   document.documentElement.lang = l;
   for (const b of document.querySelectorAll('.lang'))
     b.setAttribute('aria-pressed', String(b.dataset.lang === l));
-  pinta(); marca();
+  pinta(); refrescarContador();
 }
 let foil = false;
 const grilla = document.getElementById('grilla');
@@ -531,16 +529,7 @@ function pinta(){
     <button class="boton${foil ? ' bfoil' : ''}" data-carta="${c.s}">${T[lang].acunar} · ${(foil?1000000:710000).toLocaleString(T[lang].loc)}</button>
     </div>`).join('');
 }
-function marca(){
-  const {quemado:q, hechas:h, total:t} = ESTADO;
-  document.getElementById('m-quemado').textContent = q.toLocaleString(T[lang].loc);
-  document.getElementById('m-hechas').textContent  = h.toLocaleString(T[lang].loc);
-  document.getElementById('m-quedan').textContent  = (t-h).toLocaleString(T[lang].loc);
-  const meta = ESTADO.meta;
-  document.getElementById('b-quemado').style.width = (q/meta*100).toFixed(1)+'%';
-  document.getElementById('m-barra').style.width   = (h/t*100).toFixed(1)+'%';
-  document.getElementById('b-quedan').style.width  = ((t-h)/t*100).toFixed(1)+'%';
-}
+
 for (const [id, v] of [['p-normal',false],['p-foil',true]]) {
   document.getElementById(id).onclick = () => {
     foil = v;
@@ -549,6 +538,13 @@ for (const [id, v] of [['p-normal',false],['p-foil',true]]) {
     pinta();
   };
 }
+grilla.addEventListener('click', (e) => {
+  const b = e.target.closest('button[data-carta]');
+  if (!b) return;
+  b.disabled = true;
+  acunar(b.dataset.carta, foil).finally(() => { b.disabled = false; });
+});
+
 for (const b of document.querySelectorAll('.lang'))
   b.onclick = () => ponIdioma(b.dataset.lang);
 ponIdioma(lang);

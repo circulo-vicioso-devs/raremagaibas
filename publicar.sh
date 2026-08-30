@@ -7,7 +7,11 @@
 # otro y pushea los dos, para que no deriven.
 #
 # deploy/ queda afuera a propósito: son 1.278 archivos de configuración de
-# Sugar, ~31 MB, y no son parte del sitio.
+# Sugar, ~31 MB, y no son parte del sitio. Tampoco van las herramientas:
+# build.mjs, simular.mjs, probe.mjs, package.json ni node_modules.
+#
+# vendor-mint.js es generado: si tocaste las dependencias, corré antes
+#   npm run build
 set -euo pipefail
 
 AQUI="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -24,6 +28,7 @@ echo "==> Copiando el sitio a $DESTINO"
 mkdir -p "$DESTINO"
 rsync -a --delete \
   "$AQUI/index.html" "$AQUI/mint.js" "$AQUI/config.js" \
+  "$AQUI/acunacion.js" "$AQUI/vendor-mint.js" \
   "$AQUI/allowlist.json" "$AQUI/README.md" "$AQUI/img" \
   "$DESTINO/"
 
