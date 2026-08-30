@@ -18,6 +18,7 @@ const $ = (id) => document.getElementById(id);
 const fmt = (n, loc) => n.toLocaleString(loc || "es-AR");
 
 let listas = { club: [], foil: [] };
+let listasOk = false;   // si la lista no cargó, no se puede afirmar nada
 let wallet = null;   // { proveedor, address }
 
 // ---------- RPC ----------
@@ -160,6 +161,11 @@ async function revisar(silencioso) {
     const n = Math.floor(saldo / CFG.PRECIO_GENTLE);
     txtEs = `${corto(wallet.address)} · ${s} MAGAIBA. Te alcanza para ${n} ${n === 1 ? "carta" : "cartas"}.`;
     txtEn = `${corto(wallet.address)} · ${s} MAGAIBA. Enough for ${n} card${n === 1 ? "" : "s"}.`;
+  } else if (!listasOk) {
+    // Sin la lista cargada no se puede decir si está o no en el club.
+    clase = "es";
+    txtEs = `${corto(wallet.address)} · ${s} MAGAIBA. No pudimos cargar la lista del club. Recargá la página; si sigue, escribinos antes de quemar nada.`;
+    txtEn = `${corto(wallet.address)} · ${s} MAGAIBA. We couldn't load the club list. Reload the page; if it persists, reach out before burning anything.`;
   } else {
     const falta = fmt(Math.ceil(CFG.PRECIO_GENTLE - saldo), loc);
     txtEs = `${corto(wallet.address)} · ${s} MAGAIBA. Te faltan ${falta} para llegar a los 710.000 del airdrop.`;
@@ -343,9 +349,23 @@ export async function acunar(carta, foil, nombre) {
 
 // ---------- arranque ----------
 export async function iniciarMint() {
+  // La ruta se resuelve contra mint.js, no contra la página: con "./" cualquier
+  // URL distinta la rompía, y al mover el sitio a /es/ y /en/ se habría roto
+  // para todos.
+  //
+  // Y el fallo NO se traga en silencio. Antes, si la lista no cargaba, el
+  // código seguía con las listas vacías y caía al chequeo por saldo: a alguien
+  // del club que ya había quemado sus tokens le decía "te faltan 710.000".
   try {
-    listas = await (await fetch("./allowlist.json")).json();
-  } catch { /* sin listas: se cae al chequeo por saldo */ }
+    const r = await fetch(new URL("./allowlist.json", import.meta.url));
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    listas = await r.json();
+    if (!Array.isArray(listas.club) || !listas.club.length) throw new Error("lista vacía");
+    listasOk = true;
+  } catch (e) {
+    console.error("no se pudo cargar la lista del club:", e);
+    listasOk = false;
+  }
 
   const b = $("conectar");
   if (b) b.onclick = conectar;
