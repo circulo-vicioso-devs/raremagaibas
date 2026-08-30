@@ -67,7 +67,10 @@ export async function refrescarContador() {
     const hechas = Math.floor(quemado / CFG.PRECIO_GENTLE);
     // El tope sale de la lista real, no de una constante: es la que produjo el
     // merkle root que está on-chain, así que no puede desincronizarse.
+    // index.html llama a esto al cargar, ANTES de que iniciarMint() traiga las
+    // listas. Sin guarda, club=0 y las barras salían con "Infinity%" y "NaN%".
     const club = listas.club.length;
+    if (!club) return;
     const meta = club * CFG.PRECIO_GENTLE;
     const loc = document.documentElement.lang === "en" ? "en-US" : "es-AR";
 
@@ -135,13 +138,15 @@ function corto(a) { return a.slice(0, 4) + "…" + a.slice(-4); }
 // pisar el mensaje de éxito recién puesto.
 async function revisar(silencioso) {
   const es = document.documentElement.lang !== "en";
-  estado("es", "Leyendo tu billetera…", "Reading your wallet…");
+  // Sin esta guarda, revisar(true) después de acuñar pisaba el mensaje de éxito
+  // con "Leyendo tu billetera…", que era justo lo que se quería evitar.
+  if (!silencioso) estado("es", "Leyendo tu billetera…", "Reading your wallet…");
 
   let saldo = 0;
   try { saldo = await saldoDe(wallet.address); }
   catch (e) {
-    estado("es", "No pudimos leer tu saldo. Probá de nuevo en un minuto.",
-                 "Couldn't read your balance. Try again in a minute.");
+    if (!silencioso) estado("es", "No pudimos leer tu saldo. Probá de nuevo en un minuto.",
+                                  "Couldn't read your balance. Try again in a minute.");
     return;
   }
 
@@ -152,15 +157,21 @@ async function revisar(silencioso) {
   const s = fmt(Math.floor(saldo), loc);
 
   let clase = "no", txtEs, txtEn;
-  if (enFoil) {
+  if (enFoil && alcanza) {
     clase = "si foil";
     txtEs = `${corto(wallet.address)} · ${s} MAGAIBA. Estás en el club y la Ultra Gentle te sale 710.000: el foil no te lo cobramos.`;
     txtEn = `${corto(wallet.address)} · ${s} MAGAIBA. You're in the club, and the Ultra Gentle costs you 710,000 — we don't charge you foil.`;
-  } else if (enClub || alcanza) {
+  } else if (alcanza) {
     clase = "si";
     const n = Math.floor(saldo / CFG.PRECIO_GENTLE);
     txtEs = `${corto(wallet.address)} · ${s} MAGAIBA. Te alcanza para ${n} ${n === 1 ? "carta" : "cartas"}.`;
     txtEn = `${corto(wallet.address)} · ${s} MAGAIBA. Enough for ${n} card${n === 1 ? "" : "s"}.`;
+  } else if (enFoil || enClub) {
+    // En la lista y sin con qué quemar. Va después de la rama de saldo: un
+    // socio del club CON saldo tiene que ver que le alcanza, no que le falta.
+    const falta = fmt(Math.ceil(CFG.PRECIO_GENTLE - saldo), loc);
+    txtEs = `${corto(wallet.address)} · ${s} MAGAIBA. Estás en el club, pero te faltan ${falta} para quemar una carta.`;
+    txtEn = `${corto(wallet.address)} · ${s} MAGAIBA. You're in the club, but you're ${falta} short to burn a card.`;
   } else if (!listasOk) {
     // Sin la lista cargada no se puede decir si está o no en el club.
     clase = "es";
@@ -267,18 +278,46 @@ function traducir(e) {
             "The transaction expired before confirming. Try again."];
   // Los errores del SDK vienen con el volcado entero de logs del programa.
   // Se muestra sólo la primera línea, y el resto queda en la consola.
-  const corto = t.split("\n")[0].split(" Source:")[0].slice(0, 180);
+  // Va a innerHTML: un error del programa con < o & rompía el marcado.
+  const esc = (x) => x.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const corto = esc(t.split("\n")[0].split(" Source:")[0].slice(0, 180));
   return [`No se pudo acuñar: ${corto}`, `Mint failed: ${corto}`];
 }
 
+let acunando = false;
+
 export async function acunar(carta, foil, nombre) {
   if (!wallet) { await conectar(); return; }
+
+  // El botón se deshabilita solo, pero eso no impide clickear OTRA carta
+  // mientras la primera está firmando. Dos acuñaciones simultáneas de la misma
+  // wallet se pisan.
+  if (acunando) {
+    estadoAcunar("es", "Esperá a que termine la acuñación en curso.",
+                       "Wait for the mint in progress to finish.");
+    return;
+  }
+  acunando = true;
+  try { return await acunarInterno(carta, foil, nombre); }
+  finally { acunando = false; }
+}
+
+async function acunarInterno(carta, foil, nombre) {
 
   const maquina = CFG.MAQUINAS[carta]?.[foil ? "foil" : "gentle"];
   if (!maquina) {
     estadoAcunar("no",
       "La acuñación todavía no abrió. Cuando abra, este mismo botón la ejecuta.",
       "Minting hasn't opened yet. When it does, this same button runs it.");
+    return;
+  }
+
+  // Sin la lista no se puede armar el proof, y el error que sale es
+  // "no está en la lista", que es exactamente la mentira que ya nos costó un caso.
+  if (!listasOk) {
+    estadoAcunar("no",
+      "No pudimos cargar la lista del club, así que no podemos armar tu acuñación. Recargá la página.",
+      "We couldn't load the club list, so we can't build your mint. Please reload the page.");
     return;
   }
 

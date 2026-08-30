@@ -42,6 +42,13 @@ export async function construir(s, umi, { maquina, grupo, lista, minter, mintTok
     throw new Error(`La billetera no está en la lista del grupo ${grupo}.`);
   }
 
+  // Si no quedan ediciones, el programa rechaza el mint igual. Chequearlo acá
+  // evita hacerle firmar a alguien una transacción condenada, y encima pagarla.
+  const quedan = Number(cm.data.itemsAvailable) - Number(cm.itemsRedeemed);
+  if (quedan <= 0) {
+    throw new Error("CandyMachineEmpty: no quedan ediciones de esta carta.");
+  }
+
   const merkleRoot = s.getMerkleRoot(lista);
   const merkleProof = s.getMerkleProof(lista, minter);
 
@@ -89,5 +96,5 @@ export async function construir(s, umi, { maquina, grupo, lista, minter, mintTok
       }),
     );
 
-  return { tbRoute, tbMint, cm, candyGuard, grupo, yaTenia, nftMint };
+  return { tbRoute, tbMint, cm, candyGuard, grupo, yaTenia, nftMint, quedan };
 }
