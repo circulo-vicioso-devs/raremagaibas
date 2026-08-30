@@ -101,6 +101,14 @@ li::marker{color:var(--rosa-pop)}
 
 /* ---- wallet ---- */
 .wallet{display:flex;flex-direction:column;gap:.7rem;align-items:center;margin:0 0 2.4rem}
+.nav{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;
+  align-items:center;gap:1rem;padding:.6rem max(1rem,calc((100% - var(--pag))/2));
+  background:color-mix(in srgb,var(--ground) 88%,transparent);backdrop-filter:blur(10px);
+  border-bottom:2px solid var(--line);font-family:var(--disp);font-weight:600}
+.nav a{text-decoration:none;color:var(--ink-2)}
+.nav .volver{color:var(--rosa);font-weight:700}
+.nav-links{display:flex;gap:1rem;font-size:.92rem}
+.cierre{margin-top:1.6rem;text-align:center}
 .wstate .tip{display:inline-block;margin-top:.35rem;font-size:.85rem;color:var(--ink-3)}
 .wstate .premio{color:var(--oro);font-weight:700}
 .wstate a{color:inherit;text-decoration:underline}
@@ -263,6 +271,13 @@ footer{border-top:2px solid var(--line);padding-top:1.3rem;font-size:.8rem;color
 </head>
 
 <body>
+<nav class="nav">
+  <a class="volver" href="/"><span aria-hidden="true">←</span> MAGAIBA</a>
+  <div class="nav-links">
+    <a href="#bases"><span class="l-es">Bases</span><span class="l-en">Open call</span></a>
+    <a href="https://jup.ag/swap/SOL-A6rSPi9JmJgVkW6BatsA6MjFYLseizPM2Fnt92coFjf4" target="_blank" rel="noopener">$MAGAIBA</a>
+  </div>
+</nav>
 <div class="wrap">
 
 <nav class="idioma" aria-label="Idioma">
@@ -410,7 +425,7 @@ community. Minting burns tokens, and they are gone for good.</span></p>
 </section>
 
 <section>
-  <h2><span class="l-es">Bases</span><span class="l-en">Open call</span></h2>
+  <h2 id="bases"><span class="l-es">Bases</span><span class="l-en">Open call</span></h2>
   <div class="dek">Serie 1 «La Vuelta» (2026)</div>
 
   <div class="l-es">
@@ -423,7 +438,6 @@ community. Minting burns tokens, and they are gone for good.</span></p>
       <li>Hasta 3 obras por artista. Propia e inédita como NFT.</li>
     </ul>
     <h3>Qué mandás</h3>
-    <p><a class="cta" href="https://docs.google.com/forms/d/e/1FAIpQLSfSydIIhrF8ZX7jpyqMuOBsb-3CNQu1c-hx6i10ftceeJ6aKA/viewform" target="_blank" rel="noopener">Presentar una obra →</a></p>
     <ul>
       <li>Archivo y título.</li>
       <li>Tu wallet de Solana.</li>
@@ -453,7 +467,6 @@ community. Minting burns tokens, and they are gone for good.</span></p>
       <li>Up to 3 works per artist. Your own, unreleased as an NFT.</li>
     </ul>
     <h3>What you send</h3>
-    <p><a class="cta" href="https://docs.google.com/forms/d/e/1FAIpQLSfSydIIhrF8ZX7jpyqMuOBsb-3CNQu1c-hx6i10ftceeJ6aKA/viewform" target="_blank" rel="noopener">Submit a work →</a></p>
     <ul>
       <li>File and title.</li>
       <li>Your Solana wallet.</li>
@@ -502,6 +515,8 @@ community. Minting burns tokens, and they are gone for good.</span></p>
     <li><span class="que"><span class="l-es">Se abre la acuñación</span><span class="l-en">Minting opens</span></span></li>
     <li class="loop"><span class="que"><span class="l-es">Repetir del 2 al 5</span><span class="l-en">Repeat 2 through 5</span></span></li>
   </ol>
+
+  <p class="cierre"><a class="cta" href="https://docs.google.com/forms/d/e/1FAIpQLSfSydIIhrF8ZX7jpyqMuOBsb-3CNQu1c-hx6i10ftceeJ6aKA/viewform" target="_blank" rel="noopener"><span class="l-es">Presentar una obra →</span><span class="l-en">Submit a work →</span></a></p>
 </section>
 
 <footer>

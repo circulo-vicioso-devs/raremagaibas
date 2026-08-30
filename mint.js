@@ -87,6 +87,10 @@ export async function refrescarContador() {
 }
 
 // ---------- wallet ----------
+const esMovil = () =>
+  /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+  (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent));
+
 function proveedores() {
   const p = [];
   if (window.phantom?.solana?.isPhantom) p.push(["Phantom", window.phantom.solana]);
@@ -99,9 +103,18 @@ function proveedores() {
 async function conectar() {
   const ps = proveedores();
   if (!ps.length) {
+    // En el navegador del celular no hay wallet inyectada: mandarlo a
+    // phantom.app no sirve de nada. El deep link abre ESTA página adentro del
+    // navegador de Phantom, que sí inyecta el proveedor.
+    if (esMovil()) {
+      estado("es", "Abriendo Phantom…", "Opening Phantom…");
+      const u = encodeURIComponent(location.href);
+      location.href = `https://phantom.app/ul/browse/${u}?ref=${encodeURIComponent(location.origin)}`;
+      return;
+    }
     estado("es", "No encontramos ninguna wallet de Solana. Instalá Phantom y volvé.",
                  "No Solana wallet found. Install Phantom and come back.");
-    window.open("https://phantom.app/", "_blank", "noopener");
+    window.open("https://phantom.app/download", "_blank", "noopener");
     return;
   }
   const [nombre, prov] = ps[0];
