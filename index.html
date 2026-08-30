@@ -109,7 +109,9 @@ li::marker{color:var(--rosa-pop)}
 .nav .volver{color:var(--rosa);font-weight:700}
 .nav-links{display:flex;gap:1rem;font-size:.92rem}
 .cierre{margin-top:1.6rem;text-align:center}
-.mono{overflow-wrap:anywhere}
+html{overflow-x:hidden}
+body{max-width:100%;overflow-x:hidden}
+.mono{overflow-wrap:anywhere;min-width:0}
 img,svg,video,canvas{max-width:100%;height:auto}
 .wstate .tip{display:inline-block;margin-top:.35rem;font-size:.85rem;color:var(--ink-3)}
 .wstate .premio{color:var(--oro);font-weight:700}
