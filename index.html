@@ -81,7 +81,7 @@ strong{font-weight:800;color:var(--ink)}
 .intro{font-size:1.05rem}
 .intro .gordo{font-size:1.15rem;font-weight:700}
 
-.pasos{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));
+.pasos{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fit,minmax(min(215px,100%),1fr));
   margin:1.8rem 0 2.4rem}
 .paso{background:var(--surf);border:2px solid var(--line);border-radius:var(--r);
   padding:1.2rem 1.15rem}
@@ -109,6 +109,8 @@ li::marker{color:var(--rosa-pop)}
 .nav .volver{color:var(--rosa);font-weight:700}
 .nav-links{display:flex;gap:1rem;font-size:.92rem}
 .cierre{margin-top:1.6rem;text-align:center}
+.mono{overflow-wrap:anywhere}
+img,svg,video,canvas{max-width:100%;height:auto}
 .wstate .tip{display:inline-block;margin-top:.35rem;font-size:.85rem;color:var(--ink-3)}
 .wstate .premio{color:var(--oro);font-weight:700}
 .wstate a{color:inherit;text-decoration:underline}
@@ -156,7 +158,8 @@ li::marker{color:var(--rosa-pop)}
 .marcador .k{font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;color:var(--ink-3);
   text-transform:uppercase;font-weight:500}
 .marcador .v{font-family:var(--disp);font-weight:700;color:var(--rosa);
-  font-size:clamp(2.2rem,7vw,3.2rem);line-height:1;font-variant-numeric:tabular-nums}
+  font-size:clamp(1.45rem,8.5vw,3.2rem);line-height:1;font-variant-numeric:tabular-nums;
+  max-width:100%;overflow-wrap:anywhere}
 .marcador .v small{font-size:.34em;color:var(--ink-3);margin-left:.25em;font-weight:600}
 .marcador .n{font-size:.78rem;color:var(--ink-2);line-height:1.35}
 .barra{width:100%;height:6px;background:var(--surf-2);border-radius:99px;overflow:hidden;margin-top:.35rem}
@@ -173,7 +176,7 @@ li::marker{color:var(--rosa-pop)}
   letter-spacing:.14em;cursor:pointer;background:var(--surf);color:var(--ink-2);
   box-shadow:0 0 0 2px var(--line);text-transform:uppercase;font-weight:600}
 .pastilla[aria-pressed="true"]{background:var(--rosa);color:#fff;box-shadow:0 0 0 2px var(--rosa)}
-.grilla{display:grid;grid-template-columns:repeat(auto-fill,minmax(238px,1fr));gap:1.9rem}
+.grilla{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(238px,100%),1fr));gap:1.9rem}
 .ficha{display:flex;flex-direction:column;gap:.7rem}
 .ficha .boton{width:100%;padding:.65rem 1rem;font-size:.82rem;letter-spacing:.04em}
 .ficha .boton{font-family:var(--mono);font-size:.68rem;letter-spacing:.02em;font-weight:600}
@@ -266,6 +269,16 @@ footer{border-top:2px solid var(--line);padding-top:1.3rem;font-size:.8rem;color
   .hero{grid-template-columns:1fr;padding:1.6rem 1.4rem 0}
   .hero .texto{padding-bottom:.5rem}
   .hero img{max-width:230px;margin-inline:auto}
+  .marcador{padding:1.1rem .7rem 1.2rem}
+  .marcador .k{font-size:.55rem;letter-spacing:.1em}
+  .marcador .n{font-size:.72rem}
+  .nav{padding-block:.5rem}
+  .nav-links{gap:.7rem;font-size:.85rem}
+}
+@media(max-width:380px){
+  .marcador{padding:1rem .5rem 1.1rem}
+  .marcador .v{font-size:clamp(1.25rem,9vw,2rem)}
+  .nav-links a:not(:last-child){display:none}
 }
 </style>
 </head>
