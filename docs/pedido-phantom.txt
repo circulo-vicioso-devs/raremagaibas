@@ -1,0 +1,45 @@
+Subject: Legitimate NFT collection hidden as spam — RareMagaibas (Solana)
+
+Hi,
+
+Our NFT collection is being hidden in Phantom, and we believe it's a false
+positive. It renders correctly everywhere else.
+
+Collection (Metaplex Certified Collection, Solana mainnet):
+  DsC9cF8DMYCvFpaJWVGZNZH2J7tEZe4TaYMxBmH2S7ws
+
+Site:        https://magaiba.xyz/raremagaiba/
+Magic Eden:  https://magiceden.io/marketplace/DsC9cF8DMYCvFpaJWVGZNZH2J7tEZe4TaYMxBmH2S7ws
+Source:      https://github.com/circulo-vicioso-devs/raremagaibas (public)
+
+Example items, which display correctly on Magic Eden but are hidden in Phantom:
+  DjxaNktBQoQT255R7Vv87zayXhnFxAisUZVFFyLdkVjf  (Magaiba Tokyo #16)
+  5YHKCgqgjQMSBzGWmH4Gm6HLAUXDoN5rZ578tsSjNAKt  (Magaiba Tokyo #10)
+
+What the collection is:
+RareMagaibas is a trading-card collection for MAGAIBA, an Argentine community
+token on Solana that launched in March 2024 out of the podcast Círculo Vicioso
+and was covered by national media (Ámbito, A24, iProUP, El Litoral). Cards are
+minted by burning MAGAIBA tokens — 710,000 or 1,000,000 per card — using
+Metaplex Candy Machine Core v3 with Candy Guard.
+
+Why we believe it is not spam:
+- Not an airdrop. Every holder minted deliberately and paid for it, both in
+  burned tokens and in SOL.
+- Minting is restricted to a 166-wallet Merkle allow list, enforced on-chain by
+  the allowList guard.
+- collection.verified = true on every item; collectionDetails is a sized V1
+  collection.
+- Metadata and images are on Arweave and resolve with HTTP 200.
+- The MAGAIBA token's mint and freeze authorities are both revoked.
+- The site is fully open source, holds no user funds or keys, and every
+  transaction is built client-side and signed by the user's own wallet.
+
+We tried to verify the domain through Phantom Portal, but it is not accepting
+new users at the moment, which is why we're writing to support instead.
+
+Could you review the collection and, if appropriate, remove the spam flag so it
+displays for holders?
+
+Thanks,
+Juan Ruocco — realjuanruocco@421.news

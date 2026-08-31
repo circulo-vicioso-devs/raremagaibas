@@ -34,7 +34,7 @@ rsync -a --delete \
   "$DESTINO/"
 
 echo "==> Generando /es/raremagaiba/ y /en/raremagaiba/"
-python3 "$(dirname "$AQUI")/cartas-idiomas.py"
+python3 "$AQUI/generadores/cartas-idiomas.py"
 
 MSG="${1:-Actualiza RareMagaibas}"
 

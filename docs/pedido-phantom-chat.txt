@@ -1,0 +1,35 @@
+--- MENSAJE 1 (abrí el chat y pegá esto) ---
+
+Hi — our Solana NFT collection is being hidden in Phantom and we think it's a
+false positive. It displays correctly on Magic Eden and in Helius DAS.
+
+Collection: DsC9cF8DMYCvFpaJWVGZNZH2J7tEZe4TaYMxBmH2S7ws
+Magic Eden: https://magiceden.io/marketplace/DsC9cF8DMYCvFpaJWVGZNZH2J7tEZe4TaYMxBmH2S7ws
+Site: https://magaiba.xyz/raremagaiba/
+
+Could you review it and remove the spam flag?
+
+--- MENSAJE 2 (si te piden más detalle) ---
+
+It's not an airdrop: every holder minted deliberately and paid, both in burned
+tokens and in SOL. Minting is restricted to a 166-wallet Merkle allow list
+enforced on-chain by the Candy Guard allowList guard.
+
+collection.verified = true on every item, collectionDetails is a sized V1
+collection, and metadata and images are on Arweave returning 200.
+
+RareMagaibas is the card collection for MAGAIBA, an Argentine community token
+launched in March 2024 from the podcast Círculo Vicioso, covered by national
+media (Ámbito, A24, iProUP). Cards are minted by burning MAGAIBA.
+
+Source is public: https://github.com/circulo-vicioso-devs/raremagaibas
+The site holds no user funds or keys; every transaction is signed by the user.
+
+--- MENSAJE 3 (sobre la verificación de dominio) ---
+
+We also tried to verify magaiba.xyz through Phantom Portal, but it's not
+accepting new users. Is there another way to get the domain verified?
+
+--- EJEMPLOS, por si los piden ---
+DjxaNktBQoQT255R7Vv87zayXhnFxAisUZVFFyLdkVjf   Magaiba Tokyo #16
+5YHKCgqgjQMSBzGWmH4Gm6HLAUXDoN5rZ578tsSjNAKt   Magaiba Tokyo #10
