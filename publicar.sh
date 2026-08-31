@@ -38,27 +38,37 @@ python3 "$AQUI/generadores/cartas-idiomas.py"
 
 MSG="${1:-Actualiza RareMagaibas}"
 
+# Commitea si hay algo nuevo y pushea SIEMPRE que haya algo sin subir.
+#
+# Antes el push colgaba del commit: si el commit ya estaba hecho y el push había
+# fallado (por ejemplo, por credenciales), la corrida siguiente decía "sin
+# cambios" y se iba sin subir nada. Eso dejó el sitio sirviendo una allowlist
+# vieja cuyo merkle root ya no coincidía con el guard on-chain: nadie podía
+# acuñar. El estado que importa es el del remoto, no el del índice.
+publicar() {
+  local repo="$1" rama="$2" etiqueta="$3"
+  git -C "$repo" add -A
+  if git -C "$repo" diff --cached --quiet; then
+    echo "    sin cambios para commitear"
+  else
+    git -C "$repo" -c user.name="RareMagaibas" -c user.email="realjuanruocco@421.news" \
+      commit -q -m "$MSG"
+    echo "    commit hecho"
+  fi
+  git -C "$repo" fetch -q origin "$rama" || true
+  if [ -z "$(git -C "$repo" log --oneline "origin/$rama..HEAD")" ]; then
+    echo "    el remoto ya está al día"
+    return
+  fi
+  git -C "$repo" push -q origin "HEAD:$rama"
+  echo "    pusheado$etiqueta"
+}
+
 echo "==> Repo del sitio"
-git -C "$AQUI" add -A
-if git -C "$AQUI" diff --cached --quiet; then
-  echo "    sin cambios"
-else
-  git -C "$AQUI" -c user.name="RareMagaibas" -c user.email="realjuanruocco@421.news" \
-    commit -q -m "$MSG"
-  git -C "$AQUI" push -q origin HEAD
-  echo "    pusheado"
-fi
+publicar "$AQUI" main ""
 
 echo "==> Repo de deploy (dispara el build de Netlify)"
-git -C "$LANDING" add -A
-if git -C "$LANDING" diff --cached --quiet; then
-  echo "    sin cambios"
-else
-  git -C "$LANDING" -c user.name="RareMagaibas" -c user.email="realjuanruocco@421.news" \
-    commit -q -m "$MSG"
-  git -C "$LANDING" push -q origin main
-  echo "    pusheado — Netlify rebuildea en ~1 min"
-fi
+publicar "$LANDING" main " — Netlify rebuildea en ~1 min"
 
 echo
 echo "https://magaiba.xyz/raremagaiba/"
